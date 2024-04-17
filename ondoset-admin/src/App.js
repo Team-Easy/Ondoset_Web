@@ -17,12 +17,14 @@ import Team from "./scenes/team";
 
 function App() {
   const [theme, colorMode] = useMode();
+  const [isSidebar, setIsSidebar] = useState(true);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
+          <Sidebar isSidebar={isSidebar} />
           <main className="content">
             <Topbar />
             <Routes>
