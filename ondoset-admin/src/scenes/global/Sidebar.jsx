@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, SvgIcon, Typography, useTheme } from "@mui/material";
+import ondosetLogo from "../../assets/ondoset_logo_white.png";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
@@ -68,7 +69,7 @@ const Sidebar = () => {
             onClick={() => setIsCollapsed(!isCollapsed)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
-              margin: "10px 0 20px 0",
+              margin: "10px 0 10px 0",
               color: colors.grey[100],
             }}
           >
@@ -79,8 +80,11 @@ const Sidebar = () => {
                 alignItems="center"
                 ml="15px"
               >
+                <SvgIcon>
+                  <image href={ondosetLogo} width="24" height="24" />
+                </SvgIcon>
                 <Typography variant="h3" color={colors.grey[100]}>
-                  ADMINIS
+                  ondoset
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
