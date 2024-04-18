@@ -91,7 +91,11 @@ const Sidebar = () => {
                 <SvgIcon>
                   <image href={ondosetLogo} width="24" height="24" />
                 </SvgIcon>
-                <Typography variant="h3" color={colors.grey[100]}>
+                <Typography
+                  variant="h3"
+                  color={colors.grey[100]}
+                  fontWeight="bold"
+                >
                   ondoset
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -112,35 +116,35 @@ const Sidebar = () => {
             />
             <Item
               title="Server Status"
-              to="/team"
+              to="/server-status"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Manage AI Model"
-              to="/contacts"
+              to="/manage-ai-model"
               icon={<ContactsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Manage Tags"
-              to="/invoices"
+              to="/manage-tags"
               icon={<ReceiptOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Manage Blacklist"
-              to="/form"
+              to="/manage-blacklist"
               icon={<PersonOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Manage Reports"
-              to="/calendar"
+              to="/manage-reports"
               icon={<CalendarTodayOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
