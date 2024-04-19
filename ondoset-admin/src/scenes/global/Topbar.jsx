@@ -1,4 +1,4 @@
-import { Box, Icon, IconButton, useTheme } from "@mui/material";
+import { Box, Typography, Icon, IconButton, useTheme } from "@mui/material";
 import { useContext } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 import InputBase from "@mui/material/InputBase";
@@ -8,25 +8,31 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
+import { useLocation } from "react-router-dom";
 
 const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+  const location = useLocation();
+
+  const formatPath = (path) => {
+    if (path === "/") {
+      return "DASHBOARD";
+    }
+    return path.replace("/", "").toUpperCase();
+  };
 
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
-      {/* SEARCH BAR */}
-      <Box
-        display="flex"
-        backgroundColor={colors.primary[400]}
-        borderRadius="3px"
+      <Typography
+        variant="h2"
+        color={colors.grey[100]}
+        fontWeight="bold"
+        sx={{ m: "10px 5px 10px 5px" }}
       >
-        <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
-        <IconButton type="button" sx={{ p: 1 }}>
-          <SearchIcon />
-        </IconButton>
-      </Box>
+        {formatPath(location.pathname)}
+      </Typography>
 
       {/* ICONS */}
       <Box display="flex">
@@ -36,12 +42,6 @@ const Topbar = () => {
           ) : (
             <LightModeOutlinedIcon />
           )}
-        </IconButton>
-        <IconButton>
-          <NotificationsOutlinedIcon />
-        </IconButton>
-        <IconButton>
-          <SettingsOutlinedIcon />
         </IconButton>
         <IconButton>
           <PersonOutlinedIcon />
