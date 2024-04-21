@@ -20,7 +20,11 @@ const Topbar = () => {
     if (path === "/") {
       return "DASHBOARD";
     }
-    return path.replace("/", "").toUpperCase();
+    return path
+      .replace("/", "")
+      .replace("-", " ")
+      .replace("-", " ")
+      .toUpperCase();
   };
 
   return (
