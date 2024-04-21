@@ -60,11 +60,11 @@ const ServerStatus = () => {
           }}
         >
           <StatBox
-            title="431,225"
-            subtitle="Reported OOTD Count"
+            title="Normal"
+            subtitle="AI Model Service Health"
             icon={
-              <AssignmentIcon
-                sx={{ color: colors.blueAccent[600], fontSize: "26px" }}
+              <CheckCircleIcon
+                sx={{ color: colors.blueAccent[600], fontSize: "94px" }}
               />
             }
           />
@@ -86,8 +86,8 @@ const ServerStatus = () => {
           }}
         >
           <StatBox
-            title="32,441"
-            subtitle="Error"
+            title="Error"
+            subtitle="Database Service Health"
             icon={
               <RunningWithErrorsIcon
                 sx={{ color: colors.blueAccent[600], fontSize: "26px" }}
@@ -110,8 +110,8 @@ const ServerStatus = () => {
           }}
         >
           <StatBox
-            title="32,441"
-            subtitle="Error"
+            title="Error"
+            subtitle="Forecast Service Health"
             icon={
               <RunningWithErrorsIcon
                 sx={{ color: colors.blueAccent[600], fontSize: "26px" }}
