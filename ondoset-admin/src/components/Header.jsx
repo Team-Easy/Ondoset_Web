@@ -1,11 +1,11 @@
-import { Typography, Box, useTheme } from "@mui/material";
+import { Typography, Box, useTheme, Divider } from "@mui/material";
 import { tokens } from "../theme";
 
 const Header = ({ title, subtitle }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Box mb="30px">
+    <Box>
       <Typography
         variant="h2"
         color={colors.grey[100]}
@@ -14,9 +14,13 @@ const Header = ({ title, subtitle }) => {
       >
         {title}
       </Typography>
-      <Typography variant="h5" color={colors.greenAccent[400]}>
-        {subtitle}
-      </Typography>
+      {subtitle !== undefined && (
+        <Typography variant="h5" color={colors.greenAccent[400]}>
+          {subtitle}
+        </Typography>
+      )}
+
+      <Divider sx={{ m: "0px 0 5px 0" }} />
     </Box>
   );
 };
