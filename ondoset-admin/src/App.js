@@ -5,6 +5,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
+import ServerStatus from "./scenes/serverStatus";
 import Team from "./scenes/team";
 import Invoices from "./scenes/invoices";
 import Contacts from "./scenes/contacts";
@@ -25,7 +26,7 @@ function App() {
             <Topbar />
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/server-status" element={<Team />} />
+              <Route path="/server-status" element={<ServerStatus />} />
               <Route path="/manage-ai-model" element={<Contacts />} />
               <Route path="/manage-tags" element={<Invoices />} />
               <Route path="/manage-blacklist" element={<Form />} />
