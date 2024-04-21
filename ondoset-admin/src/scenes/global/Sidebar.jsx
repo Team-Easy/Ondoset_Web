@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, SvgIcon, Typography, useTheme } from "@mui/material";
-import ondosetLogo from "../../assets/ondoset_logo_white.svg";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
@@ -17,12 +16,16 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import lightLogoImage from "../../assets/ondoset_logo_main.svg";
+import darkLogoImage from "../../assets/ondoset_logo_white.svg";
 
 const Sidebar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+
+  let logoSrc = theme.palette.mode === "light" ? lightLogoImage : darkLogoImage;
 
   const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme();
@@ -89,7 +92,7 @@ const Sidebar = () => {
                 ml="15px"
               >
                 <SvgIcon>
-                  <image href={ondosetLogo} width="24" height="24" />
+                  <image href={logoSrc} width="24" height="24" />
                 </SvgIcon>
                 <Typography
                   variant="h3"
