@@ -34,8 +34,12 @@ const Topbar = () => {
       justifyContent="space-between"
       alignItems="flex-start"
       p={2}
+      sx={{
+        boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
+        borderRadius: "5px",
+      }}
     >
-      <Box mb="30px">
+      <Box>
         {/* add subtitle if needed-> will be added below title */}
         <Header title={formatPath(location.pathname)} subtitle="" />
       </Box>

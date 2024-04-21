@@ -87,12 +87,12 @@ const Sidebar = () => {
             {!isCollapsed && (
               <Box
                 display="flex"
-                justifyContent="space-between"
+                justifyContent="flex-end"
                 alignItems="center"
                 // ml="15px"
                 width="100%"
               >
-                <SvgIcon viewBox="0 0 40 40">
+                <SvgIcon fontSize="large">
                   <image href={logoSrc} width={"100%"} height={"100%"} />
                 </SvgIcon>
 
@@ -100,6 +100,9 @@ const Sidebar = () => {
                   variant="h2"
                   color={colors.grey[100]}
                   fontWeight="bold"
+                  ml="10px"
+                  mr="10px"
+                  mb="5px"
                 >
                   ondoset
                 </Typography>
