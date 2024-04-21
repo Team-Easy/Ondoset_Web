@@ -63,7 +63,7 @@ const Sidebar = () => {
           backgroundColor: "transparent !important",
         },
         "& .pro-inner-item": {
-          padding: "5px 35px 5px 20px !important",
+          padding: "5px 20px 5px 20px !important",
         },
         "& .pro-inner-item:hover": {
           color: "#868dfb !important",
@@ -89,13 +89,15 @@ const Sidebar = () => {
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
-                ml="15px"
+                // ml="15px"
+                width="100%"
               >
-                <SvgIcon>
-                  <image href={logoSrc} width="24" height="24" />
+                <SvgIcon viewBox="0 0 40 40">
+                  <image href={logoSrc} width={"100%"} height={"100%"} />
                 </SvgIcon>
+
                 <Typography
-                  variant="h3"
+                  variant="h2"
                   color={colors.grey[100]}
                   fontWeight="bold"
                 >

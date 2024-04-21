@@ -9,6 +9,7 @@ import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../../components/Header";
 import MAULineChart from "../../components/TimeLineChart";
 import LineChart from "../../components/LineChart";
+import PieChart from "../../components/PieChart";
 import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
@@ -164,7 +165,57 @@ const Dashboard = () => {
             </Box>
           </Box>
         </Box>
+        {/* CAT Pie Chart */}
         <Box
+          gridColumn="span 6"
+          gridRow="span 4"
+          backgroundColor={colors.primary[400]}
+          sx={{
+            boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
+            borderRadius: "5px",
+            height: "100%",
+          }}
+        >
+          <Box
+            mt="25px"
+            p="0 30px"
+            display="flex "
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box>
+              <Typography
+                variant="h3"
+                fontWeight="bold"
+                color={colors.grey[100]}
+              >
+                Combination Add Types
+              </Typography>
+              <Typography variant="h6" color={colors.greenAccent[500]}>
+                Last 5 months
+              </Typography>
+            </Box>
+          </Box>
+          <Box height="70%">
+            <PieChart />
+          </Box>
+          <Box m={"15px"}>
+            <Divider />
+
+            <Box display="flex" mt="4px" mb="20px" alignItems="center">
+              <Button
+                startIcon={
+                  <UpdateIcon
+                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                  />
+                }
+              >
+                Update Status
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+        {/* <Box
           gridColumn="span 6"
           gridRow="span 4"
           backgroundColor={colors.primary[400]}
@@ -213,7 +264,7 @@ const Dashboard = () => {
               </Box>
             </Box>
           ))}
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );
