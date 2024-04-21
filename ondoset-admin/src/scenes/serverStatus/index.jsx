@@ -1,6 +1,13 @@
-import { Box, Button, Divider, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Typography,
+  useTheme,
+  SvgIcon,
+} from "@mui/material";
 import { tokens } from "../../theme";
-import { mockTransactions } from "../../data/mockData";
+import { mockTransactions, mainServerErrorData } from "../../data/mockData";
 import StatBox from "../../components/StatBox";
 
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -21,17 +28,14 @@ const ServerStatus = () => {
         gridAutoRows="100px"
         gap="20px"
       >
-        {/* ROW 1 */}
-        {/* Main Server Status */}
+        {/* Col 0 */}
+        {/* Main Server Error */}
         <Box
           gridColumn="span 8"
           gridRow="span 8"
           backgroundColor={colors.primary[400]}
           padding="0px 15px 0px 15px"
-          //   display="flex"
-          //   alignItems="flex-start"
-          //   justifyContent="center"
-          //   overflow="auto"
+          overflow="auto"
           sx={{
             boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
             borderRadius: "5px",
@@ -42,7 +46,6 @@ const ServerStatus = () => {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            // borderBottom={`1px solid ${colors.grey[500]}`}
             colors={colors.grey[100]}
             p="15px 0px 15px 0px"
           >
@@ -71,34 +74,48 @@ const ServerStatus = () => {
 
           <Divider />
 
-          {mockTransactions.map((transaction, i) => (
-            <Box
-              key={`${transaction.txId}-${i}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
-            >
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction.txId}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.user}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
+          {mainServerErrorData.map((errorData, i) => (
+            <Box key={`${i}`} alignContent={"center"}>
               <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                width="100%"
+                p="15px"
               >
-                ${transaction.cost}
+                <SvgIcon
+                  sx={{
+                    blockSize: "90px",
+                    minBlockSize: "90px",
+                    minInlineSize: "90px",
+                    overflow: "visible",
+                    alignContent: "flex-start",
+                  }}
+                >
+                  <RunningWithErrorsIcon
+                    sx={{ color: colors.blueAccent[600], fontSize: "94px" }}
+                  />
+                </SvgIcon>
+
+                <Box>
+                  <Typography
+                    color={colors.grey[500]}
+                    variant="h5"
+                    fontWeight="600"
+                    align="right"
+                  >
+                    Main Server Error Log
+                  </Typography>
+                  <Typography color={colors.grey[500]} align="right">
+                    Error Level : {errorData.level}
+                  </Typography>
+                  <Typography variant="h3" fontWeight="600" align="right">
+                    Error Location: {errorData.location}
+                  </Typography>
+                </Box>
+              </Box>
+              <Box display="flex" justifyContent="center">
+                <Divider width="95%" />
               </Box>
             </Box>
           ))}
