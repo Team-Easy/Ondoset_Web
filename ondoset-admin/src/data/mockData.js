@@ -1358,3 +1358,54 @@ export const timeLinearLineData = [
   //   id: "fake corp. B",
   // },
 ];
+
+export const mainServerErrorData = [
+  {
+    date: 1711724512,
+    level: "WARN",
+    location: "example.Service.method",
+    msg: "경고 메시지",
+  },
+  {
+    date: 1711724512,
+    level: "WARN",
+    location: "example.Service.method",
+    msg: "경고 메시지",
+  },
+  {
+    date: 1711724512,
+    level: "WARN",
+    location: "example.Service.method",
+    msg: "경고 메시지",
+  },
+  {
+    date: 1711724512,
+    level: "WARN",
+    location: "example.Service.method",
+    msg: "경고 메시지",
+  },
+  {
+    date: 1711724512,
+    level: "WARN",
+    location: "example.Service.method",
+    msg: "경고 메시지",
+  },
+  {
+    date: 1711724512,
+    level: "WARN",
+    location: "example.Service.method",
+    msg: "경고 메시지",
+  },
+  {
+    date: 1711724512,
+    level: "WARN",
+    location: "example.Service.method",
+    msg: "경고 메시지",
+  },
+  {
+    date: 1711724512,
+    level: "WARN",
+    location: "example.Service.method",
+    msg: "경고 메시지",
+  },
+];
