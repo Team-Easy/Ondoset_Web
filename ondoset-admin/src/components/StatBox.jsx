@@ -7,7 +7,7 @@ import {
   SvgIcon,
 } from "@mui/material";
 import { tokens } from "../theme";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import UpdateIcon from "@mui/icons-material/Update";
 // import ondosetLogo from "../assets/ondoset_logo_white.svg";
 
 const StatBox = ({ title, subtitle, icon, progress, increase }) => {
@@ -42,12 +42,17 @@ const StatBox = ({ title, subtitle, icon, progress, increase }) => {
           {icon}
         </SvgIcon>
         <Box>
-          <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>
+          <Typography
+            textAlign="right"
+            variant="h6"
+            sx={{ color: colors.greenAccent[500] }}
+          >
             {subtitle}
           </Typography>
           <Typography
             variant="h3"
             fontWeight="bold"
+            textAlign="right"
             sx={{ color: colors.grey[100] }}
           >
             {title}
@@ -59,10 +64,15 @@ const StatBox = ({ title, subtitle, icon, progress, increase }) => {
       <Divider />
 
       <Box display="flex" mt="4px" mb="20px" alignItems="center">
-        <PersonAddIcon
-          sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-        />
-        <Button sx={{}}>Update Status</Button>
+        <Button
+          startIcon={
+            <UpdateIcon
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
+        >
+          Update Status
+        </Button>
       </Box>
     </Box>
   );

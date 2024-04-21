@@ -12,6 +12,10 @@ import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
 
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors";
+
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -46,6 +50,7 @@ const Dashboard = () => {
         gap="20px"
       >
         {/* ROW 1 */}
+        {/* Main Server Status */}
         <Box
           gridColumn="span 4"
           backgroundColor={colors.primary[400]}
@@ -64,12 +69,13 @@ const Dashboard = () => {
             progress="0.75"
             increase="+14%"
             icon={
-              <EmailIcon
+              <CheckCircleIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "94px" }}
               />
             }
           />
         </Box>
+        {/* Reported OOTD */}
         <Box
           gridColumn="span 4"
           backgroundColor={colors.primary[400]}
@@ -88,12 +94,13 @@ const Dashboard = () => {
             progress="0.50"
             increase="+21%"
             icon={
-              <PointOfSaleIcon
+              <AssignmentIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
           />
         </Box>
+        {/* Error */}
         <Box
           gridColumn="span 4"
           backgroundColor={colors.primary[400]}
@@ -112,7 +119,7 @@ const Dashboard = () => {
             progress="0.30"
             increase="+5%"
             icon={
-              <PersonAddIcon
+              <RunningWithErrorsIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
