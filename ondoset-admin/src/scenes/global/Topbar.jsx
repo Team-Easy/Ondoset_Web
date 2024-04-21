@@ -8,6 +8,7 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
+import Header from "../../components/Header";
 import { useLocation } from "react-router-dom";
 
 const Topbar = () => {
@@ -28,15 +29,16 @@ const Topbar = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="space-between" p={2}>
-      <Typography
-        variant="h2"
-        color={colors.grey[100]}
-        fontWeight="bold"
-        sx={{ m: "10px 5px 10px 5px" }}
-      >
-        {formatPath(location.pathname)}
-      </Typography>
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      alignItems="flex-start"
+      p={2}
+    >
+      <Box mb="30px">
+        {/* add subtitle if needed-> will be added below title */}
+        <Header title={formatPath(location.pathname)} subtitle="" />
+      </Box>
 
       {/* ICONS */}
       <Box display="flex">
