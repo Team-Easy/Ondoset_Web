@@ -50,8 +50,13 @@ const Dashboard = () => {
           gridColumn="span 4"
           backgroundColor={colors.primary[400]}
           display="flex"
-          alignItems="center"
+          alignItems="flex-start"
           justifyContent="center"
+          sx={{
+            boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
+            borderRadius: "5px",
+            height: "100%",
+          }}
         >
           <StatBox
             title="12,361"
@@ -60,7 +65,7 @@ const Dashboard = () => {
             increase="+14%"
             icon={
               <EmailIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                sx={{ color: colors.greenAccent[600], fontSize: "94px" }}
               />
             }
           />
@@ -69,8 +74,13 @@ const Dashboard = () => {
           gridColumn="span 4"
           backgroundColor={colors.primary[400]}
           display="flex"
-          alignItems="center"
+          alignItems="flex-start"
           justifyContent="center"
+          sx={{
+            boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
+            borderRadius: "5px",
+            height: "100%",
+          }}
         >
           <StatBox
             title="431,225"
@@ -88,8 +98,13 @@ const Dashboard = () => {
           gridColumn="span 4"
           backgroundColor={colors.primary[400]}
           display="flex"
-          alignItems="center"
+          alignItems="flex-start"
           justifyContent="center"
+          sx={{
+            boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
+            borderRadius: "5px",
+            height: "100%",
+          }}
         >
           <StatBox
             title="32,441"
