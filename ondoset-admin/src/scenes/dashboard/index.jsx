@@ -7,6 +7,7 @@ import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../../components/Header";
+import MAULineChart from "../../components/TimeLineChart";
 import LineChart from "../../components/LineChart";
 import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
@@ -144,7 +145,8 @@ const Dashboard = () => {
             </Box> */}
           </Box>
           <Box height="70%">
-            <LineChart isDashboard={true} />
+            <MAULineChart />
+            {/* <LineChart /> */}
           </Box>
           <Box m={"15px"}>
             <Divider />
