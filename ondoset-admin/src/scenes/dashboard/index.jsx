@@ -115,29 +115,25 @@ const Dashboard = () => {
           >
             <Box>
               <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
-                Revenue Generated
-              </Typography>
-              <Typography
                 variant="h3"
                 fontWeight="bold"
-                color={colors.greenAccent[500]}
+                color={colors.grey[100]}
               >
-                $59,342.32
+                Monthly Active Users
+              </Typography>
+              <Typography variant="h6" color={colors.greenAccent[500]}>
+                Last 5 months
               </Typography>
             </Box>
-            <Box>
+            {/* <Box>
               <IconButton>
                 <DownloadOutlinedIcon
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
-            </Box>
+            </Box> */}
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
+          <Box height="80%" m="-20px 0 0 0">
             <LineChart isDashboard={true} />
           </Box>
         </Box>
