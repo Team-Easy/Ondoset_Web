@@ -39,7 +39,7 @@ const Topbar = () => {
         borderRadius: "5px",
       }}
     >
-      <Box>
+      <Box ml="5px">
         {/* add subtitle if needed-> will be added below title */}
         <Header title={formatPath(location.pathname)} subtitle="" />
       </Box>
