@@ -101,6 +101,7 @@ const Dashboard = () => {
         </Box>
 
         {/* ROW 2 */}
+        {/* MAU line chart */}
         <Box
           gridColumn="span 6"
           gridRow="span 2"
@@ -133,7 +134,7 @@ const Dashboard = () => {
               </IconButton>
             </Box> */}
           </Box>
-          <Box height="80%" m="-20px 0 0 0">
+          <Box height="80%">
             <LineChart isDashboard={true} />
           </Box>
         </Box>
