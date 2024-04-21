@@ -44,10 +44,8 @@ const Dashboard = () => {
           }}
         >
           <StatBox
-            title="12,361"
-            subtitle="Emails Sent"
-            progress="0.75"
-            increase="+14%"
+            title="Normal"
+            subtitle="Main Server Health"
             icon={
               <CheckCircleIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "94px" }}
@@ -70,9 +68,7 @@ const Dashboard = () => {
         >
           <StatBox
             title="431,225"
-            subtitle="Sales Obtained"
-            progress="0.50"
-            increase="+21%"
+            subtitle="Reported OOTD Count"
             icon={
               <AssignmentIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -95,9 +91,7 @@ const Dashboard = () => {
         >
           <StatBox
             title="32,441"
-            subtitle="New Clients"
-            progress="0.30"
-            increase="+5%"
+            subtitle="Error"
             icon={
               <RunningWithErrorsIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}

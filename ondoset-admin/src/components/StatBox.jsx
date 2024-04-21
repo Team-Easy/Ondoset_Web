@@ -10,7 +10,7 @@ import { tokens } from "../theme";
 import UpdateIcon from "@mui/icons-material/Update";
 // import ondosetLogo from "../assets/ondoset_logo_white.svg";
 
-const StatBox = ({ title, subtitle, icon, progress, increase }) => {
+const StatBox = ({ title, subtitle, icon }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
