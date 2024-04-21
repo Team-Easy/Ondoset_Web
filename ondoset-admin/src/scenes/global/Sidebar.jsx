@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, SvgIcon, Typography, useTheme } from "@mui/material";
-import ondosetLogo from "../../assets/ondoset_logo_white.svg";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
@@ -17,12 +16,16 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import lightLogoImage from "../../assets/ondoset_logo_main.svg";
+import darkLogoImage from "../../assets/ondoset_logo_white.svg";
 
 const Sidebar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+
+  let logoSrc = theme.palette.mode === "light" ? lightLogoImage : darkLogoImage;
 
   const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme();
@@ -60,7 +63,7 @@ const Sidebar = () => {
           backgroundColor: "transparent !important",
         },
         "& .pro-inner-item": {
-          padding: "5px 35px 5px 20px !important",
+          padding: "5px 20px 5px 20px !important",
         },
         "& .pro-inner-item:hover": {
           color: "#868dfb !important",
@@ -84,17 +87,22 @@ const Sidebar = () => {
             {!isCollapsed && (
               <Box
                 display="flex"
-                justifyContent="space-between"
+                justifyContent="flex-end"
                 alignItems="center"
-                ml="15px"
+                // ml="15px"
+                width="100%"
               >
-                <SvgIcon>
-                  <image href={ondosetLogo} width="24" height="24" />
+                <SvgIcon fontSize="large">
+                  <image href={logoSrc} width={"100%"} height={"100%"} />
                 </SvgIcon>
+
                 <Typography
-                  variant="h3"
+                  variant="h2"
                   color={colors.grey[100]}
                   fontWeight="bold"
+                  ml="10px"
+                  mr="10px"
+                  mb="5px"
                 >
                   ondoset
                 </Typography>

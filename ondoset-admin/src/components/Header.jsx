@@ -19,8 +19,6 @@ const Header = ({ title, subtitle }) => {
           {subtitle}
         </Typography>
       )}
-
-      <Divider sx={{ m: "0px 0 5px 0" }} />
     </Box>
   );
 };

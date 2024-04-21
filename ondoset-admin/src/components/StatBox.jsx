@@ -70,6 +70,9 @@ const StatBox = ({ title, subtitle, icon }) => {
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
             />
           }
+          style={{
+            color: colors.grey[100],
+          }}
         >
           Update Status
         </Button>

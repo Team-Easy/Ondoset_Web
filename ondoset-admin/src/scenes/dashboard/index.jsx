@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Button, Divider, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
@@ -7,7 +7,9 @@ import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../../components/Header";
+import MAULineChart from "../../components/TimeLineChart";
 import LineChart from "../../components/LineChart";
+import PieChart from "../../components/PieChart";
 import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
@@ -15,6 +17,7 @@ import ProgressCircle from "../../components/ProgressCircle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors";
+import UpdateIcon from "@mui/icons-material/Update";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -26,13 +29,14 @@ const Dashboard = () => {
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="200px"
+        gridAutoRows="100px"
         gap="20px"
       >
         {/* ROW 1 */}
         {/* Main Server Status */}
         <Box
           gridColumn="span 4"
+          gridRow="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="flex-start"
@@ -48,7 +52,7 @@ const Dashboard = () => {
             subtitle="Main Server Health"
             icon={
               <CheckCircleIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "94px" }}
+                sx={{ color: colors.blueAccent[600], fontSize: "94px" }}
               />
             }
           />
@@ -56,6 +60,7 @@ const Dashboard = () => {
         {/* Reported OOTD */}
         <Box
           gridColumn="span 4"
+          gridRow="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="flex-start"
@@ -71,7 +76,7 @@ const Dashboard = () => {
             subtitle="Reported OOTD Count"
             icon={
               <AssignmentIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                sx={{ color: colors.blueAccent[600], fontSize: "26px" }}
               />
             }
           />
@@ -79,6 +84,7 @@ const Dashboard = () => {
         {/* Error */}
         <Box
           gridColumn="span 4"
+          gridRow="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="flex-start"
@@ -94,17 +100,23 @@ const Dashboard = () => {
             subtitle="Error"
             icon={
               <RunningWithErrorsIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                sx={{ color: colors.blueAccent[600], fontSize: "26px" }}
               />
             }
           />
         </Box>
 
         {/* ROW 2 */}
+        {/* MAU line chart */}
         <Box
           gridColumn="span 6"
-          gridRow="span 2"
+          gridRow="span 4"
           backgroundColor={colors.primary[400]}
+          sx={{
+            boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
+            borderRadius: "5px",
+            height: "100%",
+          }}
         >
           <Box
             mt="25px"
@@ -115,81 +127,99 @@ const Dashboard = () => {
           >
             <Box>
               <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
-                Revenue Generated
-              </Typography>
-              <Typography
                 variant="h3"
                 fontWeight="bold"
-                color={colors.greenAccent[500]}
+                color={colors.grey[100]}
               >
-                $59,342.32
+                Monthly Active Users
+              </Typography>
+              <Typography variant="h6" color={colors.greenAccent[500]}>
+                Last 5 months
               </Typography>
             </Box>
-            <Box>
+            {/* <Box>
               <IconButton>
                 <DownloadOutlinedIcon
                   sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
                 />
               </IconButton>
-            </Box>
+            </Box> */}
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
+          <Box height="70%" width="100%">
+            <MAULineChart />
+            {/* <LineChart /> */}
+          </Box>
+          <Box m={"15px"}>
+            <Divider />
+
+            <Box display="flex" mt="4px" mb="20px" alignItems="center">
+              <Button
+                startIcon={
+                  <UpdateIcon
+                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                  />
+                }
+                style={{
+                  color: colors.grey[100],
+                }}
+              >
+                Update Status
+              </Button>
+            </Box>
           </Box>
         </Box>
+        {/* CAT Pie Chart */}
         <Box
           gridColumn="span 6"
-          gridRow="span 2"
+          gridRow="span 4"
           backgroundColor={colors.primary[400]}
-          overflow="auto"
+          sx={{
+            boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
+            borderRadius: "5px",
+            height: "100%",
+          }}
         >
           <Box
-            display="flex"
+            mt="25px"
+            p="0 30px"
+            display="flex "
             justifyContent="space-between"
             alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
-            colors={colors.grey[100]}
-            p="15px"
           >
-            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Transactions
-            </Typography>
-          </Box>
-          {mockTransactions.map((transaction, i) => (
-            <Box
-              key={`${transaction.txId}-${i}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
-            >
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction.txId}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.user}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
+            <Box>
+              <Typography
+                variant="h3"
+                fontWeight="bold"
+                color={colors.grey[100]}
               >
-                ${transaction.cost}
-              </Box>
+                Combination Add Types
+              </Typography>
+              <Typography variant="h6" color={colors.greenAccent[500]}>
+                Last 5 months
+              </Typography>
             </Box>
-          ))}
+          </Box>
+          <Box height="70%">
+            <PieChart />
+          </Box>
+          <Box m={"15px"}>
+            <Divider />
+
+            <Box display="flex" mt="4px" mb="20px" alignItems="center">
+              <Button
+                startIcon={
+                  <UpdateIcon
+                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                  />
+                }
+                style={{
+                  color: colors.grey[100],
+                }}
+              >
+                Update Status
+              </Button>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </Box>
