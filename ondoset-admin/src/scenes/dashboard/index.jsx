@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Button, Divider, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
@@ -15,6 +15,7 @@ import ProgressCircle from "../../components/ProgressCircle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors";
+import UpdateIcon from "@mui/icons-material/Update";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -26,13 +27,14 @@ const Dashboard = () => {
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="200px"
+        gridAutoRows="100px"
         gap="20px"
       >
         {/* ROW 1 */}
         {/* Main Server Status */}
         <Box
           gridColumn="span 4"
+          gridRow="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="flex-start"
@@ -56,6 +58,7 @@ const Dashboard = () => {
         {/* Reported OOTD */}
         <Box
           gridColumn="span 4"
+          gridRow="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="flex-start"
@@ -79,6 +82,7 @@ const Dashboard = () => {
         {/* Error */}
         <Box
           gridColumn="span 4"
+          gridRow="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="flex-start"
@@ -104,8 +108,13 @@ const Dashboard = () => {
         {/* MAU line chart */}
         <Box
           gridColumn="span 6"
-          gridRow="span 2"
+          gridRow="span 4"
           backgroundColor={colors.primary[400]}
+          sx={{
+            boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
+            borderRadius: "5px",
+            height: "100%",
+          }}
         >
           <Box
             mt="25px"
@@ -134,13 +143,28 @@ const Dashboard = () => {
               </IconButton>
             </Box> */}
           </Box>
-          <Box height="80%">
+          <Box height="70%">
             <LineChart isDashboard={true} />
+          </Box>
+          <Box m={"15px"}>
+            <Divider />
+
+            <Box display="flex" mt="4px" mb="20px" alignItems="center">
+              <Button
+                startIcon={
+                  <UpdateIcon
+                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                  />
+                }
+              >
+                Update Status
+              </Button>
+            </Box>
           </Box>
         </Box>
         <Box
           gridColumn="span 6"
-          gridRow="span 2"
+          gridRow="span 4"
           backgroundColor={colors.primary[400]}
           overflow="auto"
         >
