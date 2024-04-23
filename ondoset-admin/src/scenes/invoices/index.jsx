@@ -43,9 +43,26 @@ const Invoices = () => {
   ];
 
   return (
-    <Box m="20px">
+    <Box
+      m="20px"
+      sx={{
+        paddingTop: "2px",
+        boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
+        borderRadius: "5px",
+      }}
+    >
       <Box
-        m="40px 0 0 0"
+        sx={{
+          margin: "10px 20px 10px 20px",
+        }}
+      >
+        <Header
+          title="Detailed Tags"
+          subtitle="Detailed tags included in major category"
+        />
+      </Box>
+      <Box
+        m="0 0 0 0"
         height="75vh"
         sx={{
           "& .MuiDataGrid-root": {
@@ -58,7 +75,7 @@ const Invoices = () => {
             color: colors.greenAccent[300],
           },
           "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[700],
+            backgroundColor: colors.blueAccent[900],
             borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
@@ -66,10 +83,13 @@ const Invoices = () => {
           },
           "& .MuiDataGrid-footerContainer": {
             borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
+            backgroundColor: colors.blueAccent[900],
           },
           "& .MuiCheckbox-root": {
             color: `${colors.greenAccent[200]} !important`,
+          },
+          "& .MuiDataGrid-row.Mui-selected": {
+            border: `1px solid ${colors.greenAccent[300]}`,
           },
         }}
       >
