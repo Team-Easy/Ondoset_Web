@@ -46,14 +46,14 @@ const Invoices = () => {
     <Box
       m="20px"
       sx={{
-        paddingTop: "2px",
+        paddingTop: "1px",
         boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
         borderRadius: "5px",
       }}
     >
       <Box
         sx={{
-          margin: "10px 20px 10px 20px",
+          margin: "20px 20px 20px 20px",
         }}
       >
         <Header
@@ -88,12 +88,9 @@ const Invoices = () => {
           "& .MuiCheckbox-root": {
             color: `${colors.greenAccent[200]} !important`,
           },
-          "& .MuiDataGrid-row.Mui-selected": {
-            border: `1px solid ${colors.greenAccent[300]}`,
-          },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataInvoices} columns={columns} />
+        <DataGrid rows={mockDataInvoices} columns={columns} />
       </Box>
     </Box>
   );
