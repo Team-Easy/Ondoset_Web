@@ -1409,3 +1409,20 @@ export const mainServerErrorData = [
     msg: "경고 메시지",
   },
 ];
+
+export function mapDataToTagsFormat(data) {
+  const mappedData = [];
+
+  for (const category in data) {
+    const tags = data[category];
+    tags.forEach((tag) => {
+      mappedData.push({
+        category: category,
+        tag: tag.tag,
+        tagId: tag.tagId,
+      });
+    });
+  }
+
+  return mappedData;
+}
