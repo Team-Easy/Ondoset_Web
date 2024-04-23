@@ -1,10 +1,12 @@
-import { Box, Typography, IconButton, useTheme } from "@mui/material";
+import { Box, Typography, IconButton, useTheme, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataInvoices, tagData } from "../../data/mockData";
 import Header from "../../components/Header";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { alignProperty } from "@mui/material/styles/cssUtils";
 
 const Invoices = () => {
   const theme = useTheme();
@@ -44,9 +46,10 @@ const Invoices = () => {
     //   renderCell: () => <div style={{ width: "100%", height: "100%" }}></div>,
     // },
     {
-      field: "actions",
-      headerName: "Actions",
+      field: "actions_update",
+      headerName: "Update",
       sortable: false,
+      align: "center",
       renderCell: (params) => (
         <>
           <IconButton
@@ -55,6 +58,16 @@ const Invoices = () => {
           >
             <EditIcon />
           </IconButton>
+        </>
+      ),
+    },
+    {
+      field: "actions_delete",
+      headerName: "Delete",
+      sortable: false,
+      align: "center",
+      renderCell: (params) => (
+        <>
           <IconButton
             aria-label="Delete"
             onClick={() => handleDelete(params.row.id)}
@@ -116,8 +129,25 @@ const Invoices = () => {
       >
         <DataGrid rows={tagData} columns={columns} disableColumnFilter />
       </Box>
-
-      <button onClick={handleAddRow}>Add Row</button>
+      <Box display="flex" alignItems="center" justifyContent="flex-end" p={2}>
+        <Button
+          onClick={() => handleAddRow()}
+          style={{
+            backgroundColor: colors.blueAccent[800],
+            color: colors.grey[100],
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+        >
+          <Typography variant="h6" color={colors.grey[100]} fontWeight="bold">
+            Add Tag to Detailed Tags
+          </Typography>
+          <Box ml="15px" mt="6px">
+            <AddCircleIcon color={colors.blueAccent[600]} />
+          </Box>
+        </Button>
+      </Box>
     </Box>
   );
 };
