@@ -1410,13 +1410,51 @@ export const mainServerErrorData = [
   },
 ];
 
+const detailedTagsData = {
+  Top: [
+    {
+      tag: "반팔 티",
+      tagId: 1,
+    },
+  ],
+  Bottom: [
+    {
+      tag: "청바지",
+      tagId: 11,
+    },
+  ],
+  Outer: [
+    {
+      tag: "집업",
+      tagId: 19,
+    },
+  ],
+  Shoe: [
+    {
+      tag: "운동화",
+      tagId: 27,
+    },
+  ],
+  Acc: [
+    {
+      tag: "털모자",
+      tagId: 34,
+    },
+    {
+      tag: "기타",
+      tagId: 41,
+    },
+  ],
+};
+
 export function mapDataToTagsFormat(data) {
   const mappedData = [];
 
   for (const category in data) {
     const tags = data[category];
-    tags.forEach((tag) => {
+    tags.forEach((tag, index) => {
       mappedData.push({
+        id: `${category}-${index}`, // 각 행에 고유한 id 생성
         category: category,
         tag: tag.tag,
         tagId: tag.tagId,
@@ -1426,3 +1464,5 @@ export function mapDataToTagsFormat(data) {
 
   return mappedData;
 }
+
+export const tagData = mapDataToTagsFormat(detailedTagsData);
