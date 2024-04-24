@@ -1,44 +1,81 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, IconButton, useTheme, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataInvoices } from "../../data/mockData";
+import { mockDataInvoices, tagData } from "../../data/mockData";
 import Header from "../../components/Header";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { alignProperty } from "@mui/material/styles/cssUtils";
 
-const Invoices = () => {
+const ManageTag = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const handleAddRow = () => {
+    // 새로운 항목 추가
+    console.log("Create item");
+  };
+
+  const handleEdit = (id) => {
+    // 수정 작업 수행
+    console.log("Edit item with ID:", id);
+  };
+
+  const handleDelete = (id) => {
+    // 삭제 작업 수행
+    console.log("Delete item with ID:", id);
+  };
   const columns = [
     { field: "id", headerName: "ID" },
+    { field: "category", headerName: "Major Category" },
     {
-      field: "name",
-      headerName: "Name",
-      flex: 1,
+      field: "tag",
+      headerName: "Tag Name",
       cellClassName: "name-column--cell",
     },
     {
-      field: "phone",
-      headerName: "Phone Number",
-      flex: 1,
+      field: "tagId",
+      headerName: "Tag ID",
     },
+    // {
+    //   field: "spacer",
+    //   headerName: "",
+    //   width: 100,
+    //   sortable: false,
+    //   renderCell: () => <div style={{ width: "100%", height: "100%" }}></div>,
+    // },
     {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
-    },
-    {
-      field: "cost",
-      headerName: "Cost",
-      flex: 1,
+      field: "actions_update",
+      headerName: "Update",
+      sortable: false,
+      align: "center",
       renderCell: (params) => (
-        <Typography color={colors.greenAccent[500]}>
-          ${params.row.cost}
-        </Typography>
+        <>
+          <IconButton
+            aria-label="Edit"
+            onClick={() => handleEdit(params.row.id)}
+          >
+            <EditIcon />
+          </IconButton>
+        </>
       ),
     },
     {
-      field: "date",
-      headerName: "Date",
-      flex: 1,
+      field: "actions_delete",
+      headerName: "Delete",
+      sortable: false,
+      align: "center",
+      renderCell: (params) => (
+        <>
+          <IconButton
+            aria-label="Delete"
+            onClick={() => handleDelete(params.row.id)}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </>
+      ),
     },
   ];
 
@@ -46,14 +83,14 @@ const Invoices = () => {
     <Box
       m="20px"
       sx={{
-        paddingTop: "2px",
+        paddingTop: "1px",
         boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
         borderRadius: "5px",
       }}
     >
       <Box
         sx={{
-          margin: "10px 20px 10px 20px",
+          margin: "20px 20px 20px 20px",
         }}
       >
         <Header
@@ -63,7 +100,7 @@ const Invoices = () => {
       </Box>
       <Box
         m="0 0 0 0"
-        height="75vh"
+        height="65vh"
         sx={{
           "& .MuiDataGrid-root": {
             border: "none",
@@ -88,15 +125,31 @@ const Invoices = () => {
           "& .MuiCheckbox-root": {
             color: `${colors.greenAccent[200]} !important`,
           },
-          "& .MuiDataGrid-row.Mui-selected": {
-            border: `1px solid ${colors.greenAccent[300]}`,
-          },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataInvoices} columns={columns} />
+        <DataGrid rows={tagData} columns={columns} disableColumnFilter />
+      </Box>
+      <Box display="flex" alignItems="center" justifyContent="flex-end" p={2}>
+        <Button
+          onClick={() => handleAddRow()}
+          style={{
+            backgroundColor: colors.blueAccent[800],
+            color: colors.grey[100],
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+        >
+          <Typography variant="h6" color={colors.grey[100]} fontWeight="bold">
+            Add Tag to Detailed Tags
+          </Typography>
+          <Box ml="15px" mt="6px">
+            <AddCircleIcon color={colors.blueAccent[600]} />
+          </Box>
+        </Button>
       </Box>
     </Box>
   );
 };
 
-export default Invoices;
+export default ManageTag;

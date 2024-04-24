@@ -1,5 +1,13 @@
-import { Box, Typography, Icon, IconButton, useTheme } from "@mui/material";
-import { useContext } from "react";
+import {
+  Box,
+  Typography,
+  Icon,
+  IconButton,
+  useTheme,
+  Button,
+  Slide,
+} from "@mui/material";
+import { useContext, useState } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 import InputBase from "@mui/material/InputBase";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
@@ -9,13 +17,24 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import Header from "../../components/Header";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const Topbar = () => {
+const Topbar = ({ handleLogin }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   const location = useLocation();
+  const navigate = useNavigate();
+  const [showLogoutButton, setShowLogoutButton] = useState(false);
+
+  const handleLogoutClick = () => {
+    setShowLogoutButton(!showLogoutButton);
+  };
+
+  const handleLogout = () => {
+    handleLogin(false);
+    navigate("/login");
+  };
 
   const formatPath = (path) => {
     if (path === "/") {
@@ -45,7 +64,7 @@ const Topbar = () => {
       </Box>
 
       {/* ICONS */}
-      <Box display="flex">
+      <Box display="flex" alignItems="center">
         <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (
             <DarkModeOutlinedIcon />
@@ -53,9 +72,21 @@ const Topbar = () => {
             <LightModeOutlinedIcon />
           )}
         </IconButton>
-        <IconButton>
+        <IconButton onClick={handleLogoutClick}>
           <PersonOutlinedIcon />
         </IconButton>
+        {/* 조건부 렌더링으로 로그아웃 버튼을 표시 */}
+        <Slide
+          direction="left"
+          in={showLogoutButton}
+          timeout={100}
+          mountOnEnter
+          unmountOnExit
+        >
+          <Button variant="outlined" onClick={handleLogout}>
+            Logout
+          </Button>
+        </Slide>
       </Box>
     </Box>
   );
