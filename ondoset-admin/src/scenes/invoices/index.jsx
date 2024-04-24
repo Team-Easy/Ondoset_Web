@@ -27,16 +27,11 @@ const Invoices = () => {
     console.log("Delete item with ID:", id);
   };
   const columns = [
-    { field: "id", headerName: "ID" },
-    { field: "category", headerName: "Major Category" },
+    { field: "id", headerName: "Member ID" },
+    { field: "category", headerName: "Nickname" },
     {
       field: "tag",
-      headerName: "Tag Name",
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "tagId",
-      headerName: "Tag ID",
+      headerName: "Ban Period",
     },
     // {
     //   field: "spacer",
@@ -94,8 +89,8 @@ const Invoices = () => {
         }}
       >
         <Header
-          title="Detailed Tags"
-          subtitle="Detailed tags included in major category"
+          title="Blacklist"
+          subtitle="List of users banned due to specific reasons"
         />
       </Box>
       <Box
