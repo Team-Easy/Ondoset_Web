@@ -143,14 +143,14 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            {/* <Item
+            <Item
               title="Manage Blacklist"
               to="/manage-blacklist"
               icon={<PersonOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
+            {/* <Item
               title="Manage Reports"
               to="/manage-reports"
               icon={<CalendarTodayOutlinedIcon />}

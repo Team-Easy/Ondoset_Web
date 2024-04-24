@@ -1,11 +1,19 @@
-import { Box, Typography, IconButton, useTheme, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  IconButton,
+  useTheme,
+  Button,
+  Divider,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataInvoices, tagData } from "../../data/mockData";
+import { mockBlacklistData } from "../../data/mockData";
 import Header from "../../components/Header";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import UpdateIcon from "@mui/icons-material/Update";
 import { alignProperty } from "@mui/material/styles/cssUtils";
 
 const Invoices = () => {
@@ -27,16 +35,12 @@ const Invoices = () => {
     console.log("Delete item with ID:", id);
   };
   const columns = [
-    { field: "id", headerName: "ID" },
-    { field: "category", headerName: "Major Category" },
+    { field: "memberId", headerName: "Member ID", align: "center" },
+    { field: "nickname", headerName: "Nickname" },
     {
-      field: "tag",
-      headerName: "Tag Name",
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "tagId",
-      headerName: "Tag ID",
+      field: "banPeriod",
+      headerName: "Ban Period",
+      align: "center",
     },
     // {
     //   field: "spacer",
@@ -61,22 +65,6 @@ const Invoices = () => {
         </>
       ),
     },
-    {
-      field: "actions_delete",
-      headerName: "Delete",
-      sortable: false,
-      align: "center",
-      renderCell: (params) => (
-        <>
-          <IconButton
-            aria-label="Delete"
-            onClick={() => handleDelete(params.row.id)}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </>
-      ),
-    },
   ];
 
   return (
@@ -94,8 +82,8 @@ const Invoices = () => {
         }}
       >
         <Header
-          title="Detailed Tags"
-          subtitle="Detailed tags included in major category"
+          title="Blacklist"
+          subtitle="List of users banned due to specific reasons"
         />
       </Box>
       <Box
@@ -127,25 +115,28 @@ const Invoices = () => {
           },
         }}
       >
-        <DataGrid rows={tagData} columns={columns} disableColumnFilter />
+        <DataGrid
+          rows={mockBlacklistData}
+          columns={columns}
+          getRowId={(row) => row.memberId}
+          disableColumnFilter
+        />
       </Box>
-      <Box display="flex" alignItems="center" justifyContent="flex-end" p={2}>
+      <Box flex={1} p={0} />
+      <Divider />
+
+      <Box display="flex" p={1} mt="4px" mb="20px" alignItems="center">
         <Button
-          onClick={() => handleAddRow()}
+          startIcon={
+            <UpdateIcon
+              sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+            />
+          }
           style={{
-            backgroundColor: colors.blueAccent[800],
             color: colors.grey[100],
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
           }}
         >
-          <Typography variant="h6" color={colors.grey[100]} fontWeight="bold">
-            Add Tag to Detailed Tags
-          </Typography>
-          <Box ml="15px" mt="6px">
-            <AddCircleIcon color={colors.blueAccent[600]} />
-          </Box>
+          Update Status
         </Button>
       </Box>
     </Box>
