@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { tokens } from "../../theme";
 import {
   Box,
   Button,
@@ -6,10 +7,13 @@ import {
   Typography,
   CircularProgress,
   Link,
+  useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = ({ onLogin }) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -47,11 +51,14 @@ const LoginPage = ({ onLogin }) => {
         border="1px solid #ccc"
         borderRadius={8}
         padding={4}
+        sx={{
+          backgroundColor: colors.blueAccent[900],
+        }}
       >
         <Box flex="1">
           <img
             src="https://via.placeholder.com/300"
-            alt="Placeholder"
+            alt="LoginImage"
             style={{ maxWidth: "100%", height: "auto" }}
           />
         </Box>
