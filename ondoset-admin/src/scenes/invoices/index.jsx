@@ -1,7 +1,7 @@
 import { Box, Typography, IconButton, useTheme, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataInvoices, tagData } from "../../data/mockData";
+import { mockBlacklistData } from "../../data/mockData";
 import Header from "../../components/Header";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -27,11 +27,12 @@ const Invoices = () => {
     console.log("Delete item with ID:", id);
   };
   const columns = [
-    { field: "id", headerName: "Member ID" },
-    { field: "category", headerName: "Nickname" },
+    { field: "memberId", headerName: "Member ID", align: "center" },
+    { field: "nickname", headerName: "Nickname" },
     {
-      field: "tag",
+      field: "banPeriod",
       headerName: "Ban Period",
+      align: "center",
     },
     // {
     //   field: "spacer",
@@ -52,22 +53,6 @@ const Invoices = () => {
             onClick={() => handleEdit(params.row.id)}
           >
             <EditIcon />
-          </IconButton>
-        </>
-      ),
-    },
-    {
-      field: "actions_delete",
-      headerName: "Delete",
-      sortable: false,
-      align: "center",
-      renderCell: (params) => (
-        <>
-          <IconButton
-            aria-label="Delete"
-            onClick={() => handleDelete(params.row.id)}
-          >
-            <DeleteIcon />
           </IconButton>
         </>
       ),
@@ -122,7 +107,12 @@ const Invoices = () => {
           },
         }}
       >
-        <DataGrid rows={tagData} columns={columns} disableColumnFilter />
+        <DataGrid
+          rows={mockBlacklistData}
+          columns={columns}
+          getRowId={(row) => row.memberId}
+          disableColumnFilter
+        />
       </Box>
       <Box display="flex" alignItems="center" justifyContent="flex-end" p={2}>
         <Button
