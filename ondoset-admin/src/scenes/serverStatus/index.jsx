@@ -32,7 +32,7 @@ const ServerStatus = () => {
         {/* Main Server Error */}
         <Box
           gridColumn="span 8"
-          gridRow="span 8"
+          gridRow="span 6"
           backgroundColor={colors.primary[400]}
           padding="0px 15px 0px 15px"
           overflow="auto"
@@ -121,7 +121,7 @@ const ServerStatus = () => {
           ))}
         </Box>
         {/* Main Server Status */}
-        <Box
+        {/* <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -143,7 +143,7 @@ const ServerStatus = () => {
               />
             }
           />
-        </Box>
+        </Box> */}
         {/* AI Model Service Health */}
         <Box
           gridColumn="span 4"

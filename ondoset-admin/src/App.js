@@ -6,8 +6,7 @@ import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
 import ServerStatus from "./scenes/serverStatus";
-import Team from "./scenes/team";
-import Invoices from "./scenes/invoices";
+import ManageTag from "./scenes/manageTag";
 import Contacts from "./scenes/contacts";
 import Form from "./scenes/form";
 import Bar from "./scenes/bar";
@@ -28,7 +27,7 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/server-status" element={<ServerStatus />} />
               <Route path="/manage-ai-model" element={<Contacts />} />
-              <Route path="/manage-tags" element={<Invoices />} />
+              <Route path="/manage-tags" element={<ManageTag />} />
               <Route path="/manage-blacklist" element={<Form />} />
               <Route path="/manage-reports" element={<Bar />} />
             </Routes>
