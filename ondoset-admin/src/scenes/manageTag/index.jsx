@@ -7,6 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { alignProperty } from "@mui/material/styles/cssUtils";
+import UpdateIcon from "@mui/icons-material/Update";
 
 const ManageTag = () => {
   const theme = useTheme();
@@ -130,7 +131,26 @@ const ManageTag = () => {
         <DataGrid rows={tagData} columns={columns} disableColumnFilter />
       </Box>
       <Box display="flex" alignItems="center" justifyContent="flex-end" p={2}>
-        <Button
+        <Box display="flex" alignItems="center">
+          <Button
+            startIcon={
+              <UpdateIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+            style={{
+              color: colors.grey[100],
+            }}
+          >
+            Update Status
+          </Button>
+        </Box>
+
+        <Box flex={1} />
+
+        <Box
+          display="flex"
+          alignItems="center"
           onClick={() => handleAddRow()}
           style={{
             backgroundColor: colors.blueAccent[800],
@@ -140,13 +160,16 @@ const ManageTag = () => {
             cursor: "pointer",
           }}
         >
-          <Typography variant="h6" color={colors.grey[100]} fontWeight="bold">
+          <Button
+            endIcon={<AddCircleIcon color={colors.blueAccent[600]} />}
+            style={{
+              color: colors.grey[100],
+              fontWeight: "bold",
+            }}
+          >
             Add Tag to Detailed Tags
-          </Typography>
-          <Box ml="15px" mt="6px">
-            <AddCircleIcon color={colors.blueAccent[600]} />
-          </Box>
-        </Button>
+          </Button>
+        </Box>
       </Box>
     </Box>
   );
