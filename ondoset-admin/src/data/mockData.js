@@ -1447,7 +1447,7 @@ const detailedTagsData = {
   ],
 };
 
-export function mapDataToTagsFormat(data) {
+function mapDataToTagsFormat(data) {
   const mappedData = [];
 
   for (const category in data) {
@@ -1466,3 +1466,16 @@ export function mapDataToTagsFormat(data) {
 }
 
 export const tagData = mapDataToTagsFormat(detailedTagsData);
+
+export const mockBlacklistData = [
+  {
+    memberId: 1,
+    nickname: "사용자닉네임1",
+    banPeriod: 20,
+  },
+  {
+    memberId: 6,
+    nickname: "사용자닉네임2",
+    banPeriod: 18,
+  },
+];
