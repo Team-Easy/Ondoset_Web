@@ -7,14 +7,14 @@ import {
   CircularProgress,
   Link,
 } from "@mui/material";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     setError("");
@@ -23,8 +23,9 @@ const LoginPage = ({ onLogin }) => {
     try {
       setLoading(false);
       onLogin();
-      history.push("/"); // 로그인 후에는 홈페이지로 이동합니다.
+      navigate("/"); // 로그인 후에는 홈페이지로 이동합니다.
     } catch (error) {
+      setLoading(false);
       setError("Invalid username or password"); // 로그인 실패 시 에러 메시지 표시
     }
   };
