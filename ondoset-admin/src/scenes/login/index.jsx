@@ -33,46 +33,72 @@ const LoginPage = ({ onLogin }) => {
   return (
     <Box
       display="flex"
-      flexDirection="column"
-      alignItems="center"
       justifyContent="center"
-      height="100vh"
+      alignItems="center"
+      height="100vh" // 화면 전체 높이만큼 설정
+      width="100%"
     >
-      <Typography variant="h4" gutterBottom>
-        Login
-      </Typography>
-      <TextField
-        label="Username"
-        variant="outlined"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        margin="normal"
-      />
-      <TextField
-        label="Password"
-        type="password"
-        variant="outlined"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        margin="normal"
-      />
-      {error && (
-        <Typography variant="body2" color="error" gutterBottom>
-          {error}
-        </Typography>
-      )}
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleLogin}
-        disabled={loading}
-        style={{ marginTop: 16 }}
+      <Box
+        width={800}
+        height={500}
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        border="1px solid #ccc"
+        borderRadius={8}
+        padding={4}
       >
-        {loading ? <CircularProgress size={24} color="inherit" /> : "Login"}
-      </Button>
-      <Typography variant="body2" style={{ marginTop: 16 }}>
-        Don't have an account? <Link href="#">Sign up</Link>
-      </Typography>
+        <Box flex="1">
+          <img
+            src="https://via.placeholder.com/300"
+            alt="Placeholder"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </Box>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          //   height="100vh"
+        >
+          <Typography variant="h4" gutterBottom>
+            Login
+          </Typography>
+          <TextField
+            label="Username"
+            variant="outlined"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            margin="normal"
+          />
+          <TextField
+            label="Password"
+            type="password"
+            variant="outlined"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            margin="normal"
+          />
+          {error && (
+            <Typography variant="body2" color="error" gutterBottom>
+              {error}
+            </Typography>
+          )}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleLogin}
+            disabled={loading}
+            style={{ marginTop: 16 }}
+          >
+            {loading ? <CircularProgress size={24} color="inherit" /> : "Login"}
+          </Button>
+          <Typography variant="body2" style={{ marginTop: 16 }}>
+            Don't have an account? <Link href="#">Sign up</Link>
+          </Typography>
+        </Box>
+      </Box>
     </Box>
   );
 };
