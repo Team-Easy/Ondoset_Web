@@ -10,6 +10,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import LoginImage from "../../assets/ondoset_login_image.png";
 
 const LoginPage = ({ onLogin }) => {
   const theme = useTheme();
@@ -53,11 +54,13 @@ const LoginPage = ({ onLogin }) => {
         padding={4}
         sx={{
           backgroundColor: colors.blueAccent[900],
+          boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
+          borderRadius: "5px",
         }}
       >
-        <Box flex="1">
+        <Box flex="1" m={6}>
           <img
-            src="https://via.placeholder.com/300"
+            src={LoginImage}
             alt="LoginImage"
             style={{ maxWidth: "100%", height: "auto" }}
           />
@@ -69,7 +72,7 @@ const LoginPage = ({ onLogin }) => {
           justifyContent="center"
           //   height="100vh"
         >
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h3" gutterBottom color={colors.blueAccent[100]}>
             Login
           </Typography>
           <TextField
@@ -78,6 +81,9 @@ const LoginPage = ({ onLogin }) => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             margin="normal"
+            sx={{
+              backgroundColor: "whitesmoke",
+            }}
           />
           <TextField
             label="Password"
@@ -86,6 +92,9 @@ const LoginPage = ({ onLogin }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             margin="normal"
+            sx={{
+              backgroundColor: "whitesmoke",
+            }}
           />
           {error && (
             <Typography variant="body2" color="error" gutterBottom>
@@ -94,16 +103,17 @@ const LoginPage = ({ onLogin }) => {
           )}
           <Button
             variant="contained"
-            color="primary"
+            color="inherit"
             onClick={handleLogin}
             disabled={loading}
-            style={{ marginTop: 16 }}
+            sx={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[900],
+            }}
+            // style={{ marginTop: 16 }}
           >
             {loading ? <CircularProgress size={24} color="inherit" /> : "Login"}
           </Button>
-          <Typography variant="body2" style={{ marginTop: 16 }}>
-            Don't have an account? <Link href="#">Sign up</Link>
-          </Typography>
         </Box>
       </Box>
     </Box>
