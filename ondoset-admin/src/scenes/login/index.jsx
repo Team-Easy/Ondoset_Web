@@ -22,7 +22,7 @@ const LoginPage = ({ onLogin }) => {
     // 로그인이 성공하면 onLogin 함수를 호출하여 App 컴포넌트의 isLoggedIn 상태를 true로 변경합니다.
     try {
       setLoading(false);
-      onLogin();
+      onLogin(true);
       navigate("/"); // 로그인 후에는 홈페이지로 이동합니다.
     } catch (error) {
       setLoading(false);

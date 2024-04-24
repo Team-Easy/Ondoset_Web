@@ -18,9 +18,9 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 추적하는 상태 변수
 
   // 로그인 처리 함수
-  const handleLogin = () => {
+  const handleLogin = (isLogin) => {
     // 로그인 처리 로직을 작성한 후, 로그인 성공 시 setIsLoggedIn(true) 호출
-    setIsLoggedIn(true);
+    setIsLoggedIn(isLogin);
   };
 
   return (
@@ -32,7 +32,7 @@ function App() {
             <>
               <Sidebar isSidebar={isSidebar} />
               <main className="content">
-                <Topbar />
+                <Topbar handleLogin={handleLogin} />
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/server-status" element={<ServerStatus />} />
