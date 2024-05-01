@@ -28,29 +28,43 @@ const ManageTag = () => {
     console.log("Delete item with ID:", id);
   };
   const columns = [
-    { field: "id", headerName: "ID" },
-    { field: "category", headerName: "Major Category" },
+    {
+      field: "id",
+      headerName: "ID",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
+      field: "category",
+      headerName: "Major Category",
+      headerAlign: "center",
+      align: "center",
+      flex: 1.5,
+    },
     {
       field: "tag",
       headerName: "Tag Name",
       cellClassName: "name-column--cell",
+      headerAlign: "center",
+      align: "center",
+      flex: 1.5,
     },
     {
       field: "tagId",
       headerName: "Tag ID",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
     },
-    // {
-    //   field: "spacer",
-    //   headerName: "",
-    //   width: 100,
-    //   sortable: false,
-    //   renderCell: () => <div style={{ width: "100%", height: "100%" }}></div>,
-    // },
+    { field: "spacer", headerName: "", flex: 12 },
     {
       field: "actions_update",
       headerName: "Update",
       sortable: false,
+      headerAlign: "center",
       align: "center",
+      flex: 1,
       renderCell: (params) => (
         <>
           <IconButton
@@ -67,6 +81,7 @@ const ManageTag = () => {
       headerName: "Delete",
       sortable: false,
       align: "center",
+      flex: 1,
       renderCell: (params) => (
         <>
           <IconButton

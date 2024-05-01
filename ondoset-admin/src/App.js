@@ -9,6 +9,7 @@ import ServerStatus from "./scenes/serverStatus";
 import ManageTag from "./scenes/manageTag";
 import Contacts from "./scenes/contacts";
 import Invoices from "./scenes/invoices";
+import ManageBlacklist from "./scenes/manageBlacklist";
 // import Form from "./scenes/form";
 import Bar from "./scenes/bar";
 import LoginPage from "./scenes/login";
@@ -39,7 +40,10 @@ function App() {
                   <Route path="/server-status" element={<ServerStatus />} />
                   <Route path="/manage-ai-model" element={<Contacts />} />
                   <Route path="/manage-tags" element={<ManageTag />} />
-                  <Route path="/manage-blacklist" element={<Invoices />} />
+                  <Route
+                    path="/manage-blacklist"
+                    element={<ManageBlacklist />}
+                  />
                   <Route path="/manage-reports" element={<Bar />} />
                 </Routes>
               </main>
