@@ -83,7 +83,14 @@ const Topbar = ({ handleLogin }) => {
           mountOnEnter
           unmountOnExit
         >
-          <Button variant="outlined" onClick={handleLogout}>
+          <Button
+            variant="outlined"
+            onClick={handleLogout}
+            style={{
+              color: colors.blueAccent[100],
+              borderColor: colors.blueAccent[100],
+            }}
+          >
             Logout
           </Button>
         </Slide>

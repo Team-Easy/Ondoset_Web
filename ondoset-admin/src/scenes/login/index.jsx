@@ -82,7 +82,15 @@ const LoginPage = ({ onLogin }) => {
             onChange={(e) => setUsername(e.target.value)}
             margin="normal"
             sx={{
-              backgroundColor: "whitesmoke",
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: colors.blueAccent[100], // 선택된 상태에서의 테두리 색상
+                },
+              "& .MuiInputLabel-outlined.Mui-focused": {
+                color: colors.blueAccent[200], // 선택된 상태에서의 라벨 색상
+              },
+              backgroundColor:
+                theme.palette.mode === "light" ? "whitesmoke" : "",
             }}
           />
           <TextField
@@ -93,7 +101,15 @@ const LoginPage = ({ onLogin }) => {
             onChange={(e) => setPassword(e.target.value)}
             margin="normal"
             sx={{
-              backgroundColor: "whitesmoke",
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: colors.blueAccent[100], // 선택된 상태에서의 테두리 색상
+                },
+              "& .MuiInputLabel-outlined.Mui-focused": {
+                color: colors.blueAccent[200], // 선택된 상태에서의 라벨 색상
+              },
+              backgroundColor:
+                theme.palette.mode === "light" ? "whitesmoke" : "",
             }}
           />
           {error && (
