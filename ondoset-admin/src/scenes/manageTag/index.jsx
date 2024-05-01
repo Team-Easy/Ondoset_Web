@@ -130,7 +130,7 @@ const ManageTag = () => {
       >
         <DataGrid rows={tagData} columns={columns} disableColumnFilter />
       </Box>
-      <Box display="flex" alignItems="center" justifyContent="flex-end" p={2}>
+      <Box display="flex" alignItems="center" justifyContent="flex-end" p={1}>
         <Box display="flex" alignItems="center">
           <Button
             startIcon={
@@ -167,7 +167,7 @@ const ManageTag = () => {
               fontWeight: "bold",
             }}
           >
-            Add Tag to Detailed Tags
+            Add Tag
           </Button>
         </Box>
       </Box>

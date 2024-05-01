@@ -125,7 +125,7 @@ const Invoices = () => {
       <Box flex={1} p={0} />
       <Divider />
 
-      <Box display="flex" p={1} mt="4px" mb="20px" alignItems="center">
+      <Box display="flex" p={1} alignItems="center">
         <Button
           startIcon={
             <UpdateIcon
