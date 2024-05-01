@@ -1479,3 +1479,29 @@ export const mockBlacklistData = [
     banPeriod: 18,
   },
 ];
+
+export const mockOffenderListData = [
+  {
+    memberId: 1,
+    nickname: "사용자닉네임1",
+    reportedCount: 20,
+  },
+  {
+    memberId: 6,
+    nickname: "사용자닉네임2",
+    reportedCount: 20,
+  },
+];
+
+export const mockReporterListData = [
+  {
+    memberId: 12,
+    nickname: "사용자닉네임12",
+    reportedCount: 20,
+  },
+  {
+    memberId: 26,
+    nickname: "사용자닉네임23",
+    reportedCount: 20,
+  },
+];
