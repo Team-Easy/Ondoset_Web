@@ -1,28 +1,11 @@
-import {
-  Box,
-  Typography,
-  IconButton,
-  useTheme,
-  Button,
-  Divider,
-} from "@mui/material";
+import { Box, IconButton, useTheme, Button, Divider } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import {
-  mockBlacklistData,
-  mockOffenderListData,
-  mockReporterListData,
-} from "../../data/mockData";
+import { mockReportedOOTDData } from "../../data/mockData";
 import Header from "../../components/Header";
-import EditIcon from "@mui/icons-material/Edit";
-import PreviewIcon from "@mui/icons-material/Preview";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import UpdateIcon from "@mui/icons-material/Update";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import GppGoodIcon from "@mui/icons-material/GppGood";
 import GppBadIcon from "@mui/icons-material/GppBad";
-import { alignProperty } from "@mui/material/styles/cssUtils";
 
 const ManageReport = () => {
   const theme = useTheme();
@@ -42,7 +25,7 @@ const ManageReport = () => {
     // 삭제 작업 수행
     console.log("Delete item with ID:", id);
   };
-  const blacklistColumns = [
+  const reportedOOTDColumns = [
     {
       field: "ootdId",
       headerName: "OOTD ID",
@@ -69,9 +52,9 @@ const ManageReport = () => {
       headerName: "Reason",
       headerAlign: "center",
       align: "center",
-      flex: 1,
+      flex: 6,
     },
-    { field: "spacer", headerName: "", flex: 12 },
+    { field: "spacer", headerName: "", flex: 7 },
     {
       field: "actions_vanish",
       headerName: "Vanish",
@@ -94,7 +77,10 @@ const ManageReport = () => {
     {
       field: "actions_remove",
       headerName: "Cancel Report",
+      headerAlign: "center",
+      align: "center",
       sortable: false,
+      flex: 1,
       renderCell: (params) => (
         <>
           <IconButton
@@ -126,8 +112,8 @@ const ManageReport = () => {
           }}
         >
           <Header
-            title="Blacklist"
-            subtitle="List of users banned due to specific reasons"
+            title="Reported OOTDs"
+            subtitle="OOTDs reported with specific reasons"
           />
         </Box>
         {/* dataGrid */}
@@ -161,9 +147,9 @@ const ManageReport = () => {
           }}
         >
           <DataGrid
-            rows={mockBlacklistData}
-            columns={blacklistColumns}
-            getRowId={(row) => row.memberId}
+            rows={mockReportedOOTDData}
+            columns={reportedOOTDColumns}
+            getRowId={(row) => row.ootdId}
             disableColumnFilter
           />
         </Box>
