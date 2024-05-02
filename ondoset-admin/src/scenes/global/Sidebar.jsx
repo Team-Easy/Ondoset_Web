@@ -150,13 +150,13 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            {/* <Item
+            <Item
               title="Manage Reports"
               to="/manage-reports"
               icon={<CalendarTodayOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            /> */}
+            />
           </Box>
         </Menu>
       </ProSidebar>
