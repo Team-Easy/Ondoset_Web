@@ -1505,3 +1505,18 @@ export const mockReporterListData = [
     reportedCount: 20,
   },
 ];
+
+export const mockReportedOOTDData = [
+  {
+    ootdId: 17,
+    reportedCount: 3,
+    imageURL: "게시물_이미지_주소.jpg",
+    reason: ["신고 사유1", "신고 사유2", "신고 사유3"],
+  },
+  {
+    ootdId: 13,
+    reportedCount: 2,
+    imageURL: "게시물_이미지_주소.jpg",
+    reason: ["신고 사유4", "신고 사유5"],
+  },
+];

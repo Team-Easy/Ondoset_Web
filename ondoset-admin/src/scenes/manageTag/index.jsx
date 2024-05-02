@@ -81,6 +81,8 @@ const ManageTag = () => {
       headerName: "Delete",
       sortable: false,
       align: "center",
+      headerAlign: "center",
+      align: "center",
       flex: 1,
       renderCell: (params) => (
         <>

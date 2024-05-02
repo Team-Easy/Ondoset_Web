@@ -10,6 +10,7 @@ import ManageTag from "./scenes/manageTag";
 import Contacts from "./scenes/contacts";
 import Invoices from "./scenes/invoices";
 import ManageBlacklist from "./scenes/manageBlacklist";
+import ManageReport from "./scenes/manageReport";
 // import Form from "./scenes/form";
 import Bar from "./scenes/bar";
 import LoginPage from "./scenes/login";
@@ -44,7 +45,7 @@ function App() {
                     path="/manage-blacklist"
                     element={<ManageBlacklist />}
                   />
-                  <Route path="/manage-reports" element={<Bar />} />
+                  <Route path="/manage-reports" element={<ManageReport />} />
                 </Routes>
               </main>
             </>
