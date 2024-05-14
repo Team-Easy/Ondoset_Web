@@ -34,9 +34,10 @@ const LoginPage = ({ onLogin }) => {
 
       // Axios를 사용하여 서버로 로그인 요청을 보냅니다.
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/api/login`,
+        `${process.env.REACT_APP_BASE_URL}/auth/login`,
         formData,
         {
+          // const response = await axios.post(`/admin/auth/login`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -44,7 +45,7 @@ const LoginPage = ({ onLogin }) => {
       );
 
       // 로그인이 성공하면 서버로부터 받은 응답을 처리합니다.
-      if (response.data.success) {
+      if (response.data.code === "common_2000") {
         setLoading(false);
         onLogin(true);
         navigate("/"); // 로그인 후에는 홈페이지로 이동합니다.
