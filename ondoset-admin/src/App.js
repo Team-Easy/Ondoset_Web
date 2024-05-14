@@ -30,9 +30,7 @@ function App() {
   const handleLogout = async () => {
     try {
       // await axios.get(`${process.env.REACT_APP_BASE_URL}/auth/logout`, {
-      console.log("이게 왜 이러는거죠")
-      let result = await axios.get(`/admin/auth/logout`);
-      console.log(result);
+      await axios.get(`/admin/auth/logout`, { withCredentials: true });
       setIsLoggedIn(false);
     } catch (error) {
       console.error("Error logging out:", error);

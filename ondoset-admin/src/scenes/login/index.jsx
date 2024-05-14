@@ -59,23 +59,8 @@ const LoginPage = ({ onLogin }) => {
       // 로그인이 성공하면 서버로부터 받은 응답을 처리합니다.
       if (response.data.code === "common_2000") {
         setLoading(false);
-        // console.log(response.headers);
-        // 응답에서 받은 쿠키를 가져와서 세션 키값을 추출합니다.
-        // console.log(response.headers["set-cookie"]);
-        // const cookies = response.headers["Set-Cookie"];
-        // console.log(cookies);
-        // const sessionId = cookies.find((cookie) =>
-        // cookie.startsWith("JSESSIONID=")
-        // );
-        // console.log(sessionId);
-        // if (sessionId) {
-        //   // 세션 키값을 localStorage에 저장합니다.
-        //   localStorage.setItem("sessionId", sessionId.split(";")[0]);
-        // }
-
         onLogin(true);
         navigate("/"); // 로그인 후에는 홈페이지로 이동합니다.
-        // console.log(`cookie: ${document.cookie}`);
       } else {
         setLoading(false);
         setError("Invalid username or password");
