@@ -46,6 +46,39 @@ const ServerStatus = () => {
     fetchData(); // fetchData 함수 호출
   }, []); // 빈 배열을 전달하여 useEffect가 컴포넌트가 마운트될 때 한 번만 실행되도록 설정
 
+  const handleUpdateAiModelStatus = async () => {
+    try {
+      const aiResponse = await axios.get("/admin/monitor/ai");
+      const { result } = aiResponse.data;
+      setAiModelStatus(result);
+      console.log("AI 페칭 완료");
+    } catch (error) {
+      console.error("Error updating database status:", error);
+    }
+  };
+
+  const handleUpdateDatabaseStatus = async () => {
+    try {
+      const dbResponse = await axios.get("/admin/monitor/db");
+      const { result: dbResult } = dbResponse.data;
+      setDatabaseStatus(dbResult);
+      console.log("DB 페칭 완료");
+    } catch (error) {
+      console.error("Error updating database status:", error);
+    }
+  };
+
+  const handleUpdateForecastStatus = async () => {
+    try {
+      const forecastResponse = await axios.get("/admin/monitor/weather");
+      const { result: forecastResult } = forecastResponse.data;
+      setForecastStatus(forecastResult);
+      console.log("기상청 페칭 완료");
+    } catch (error) {
+      console.error("Error updating forecast status:", error);
+    }
+  };
+
   return (
     <Box m="20px">
       {/* GRID & CHARTS */}
@@ -199,6 +232,7 @@ const ServerStatus = () => {
                 />
               )
             }
+            onUpdateStatus={handleUpdateAiModelStatus}
           />
         </Box>
 
@@ -231,6 +265,7 @@ const ServerStatus = () => {
                 />
               )
             }
+            onUpdateStatus={handleUpdateDatabaseStatus}
           />
         </Box>
         {/* Forecast Service Health */}
@@ -261,6 +296,7 @@ const ServerStatus = () => {
                 />
               )
             }
+            onUpdateStatus={handleUpdateForecastStatus}
           />
         </Box>
       </Box>
