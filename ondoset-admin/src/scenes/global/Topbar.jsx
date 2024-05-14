@@ -19,7 +19,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Header from "../../components/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Topbar = ({ handleLogin }) => {
+const Topbar = ({ handleLogin, handleLogout }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
@@ -29,11 +29,6 @@ const Topbar = ({ handleLogin }) => {
 
   const handleLogoutClick = () => {
     setShowLogoutButton(!showLogoutButton);
-  };
-
-  const handleLogout = () => {
-    handleLogin(false);
-    navigate("/login");
   };
 
   const formatPath = (path) => {

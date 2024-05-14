@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { tokens } from "../../theme";
 import {
   Box,
@@ -22,6 +22,18 @@ const LoginPage = ({ onLogin }) => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // 페이지가 로드될 때 세션의 존재 여부를 확인합니다.
+    const isLoggedIn = document.cookie
+      .split(";")
+      .some((cookie) => cookie.trim().startsWith("JSESSIONID"));
+
+    // 세션의 존재 여부에 따라 로그인 상태를 변경합니다.
+    if (isLoggedIn) {
+      onLogin(true);
+    }
+  }, [onLogin]);
+
   const handleLogin = async () => {
     setError("");
     setLoading(true);
@@ -33,22 +45,37 @@ const LoginPage = ({ onLogin }) => {
       console.log(username, password);
 
       // Axios를 사용하여 서버로 로그인 요청을 보냅니다.
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/auth/login`,
-        formData,
-        {
-          // const response = await axios.post(`/admin/auth/login`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      // const response = await axios.post(
+      //   `${process.env.REACT_APP_BASE_URL}/auth/login`,
+      //   formData,
+      //   {
+      const response = await axios.post(`/admin/auth/login`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true, // credentials 옵션 설정
+      });
 
       // 로그인이 성공하면 서버로부터 받은 응답을 처리합니다.
       if (response.data.code === "common_2000") {
         setLoading(false);
+        // console.log(response.headers);
+        // 응답에서 받은 쿠키를 가져와서 세션 키값을 추출합니다.
+        // console.log(response.headers["set-cookie"]);
+        // const cookies = response.headers["Set-Cookie"];
+        // console.log(cookies);
+        // const sessionId = cookies.find((cookie) =>
+        // cookie.startsWith("JSESSIONID=")
+        // );
+        // console.log(sessionId);
+        // if (sessionId) {
+        //   // 세션 키값을 localStorage에 저장합니다.
+        //   localStorage.setItem("sessionId", sessionId.split(";")[0]);
+        // }
+
         onLogin(true);
         navigate("/"); // 로그인 후에는 홈페이지로 이동합니다.
+        // console.log(`cookie: ${document.cookie}`);
       } else {
         setLoading(false);
         setError("Invalid username or password");
@@ -56,6 +83,7 @@ const LoginPage = ({ onLogin }) => {
     } catch (error) {
       setLoading(false);
       setError("Something went wrong"); // 서버 통신 에러 처리
+      console.log(error);
     }
   };
 

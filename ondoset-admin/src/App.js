@@ -11,7 +11,7 @@ import Contacts from "./scenes/contacts";
 import Invoices from "./scenes/invoices";
 import ManageBlacklist from "./scenes/manageBlacklist";
 import ManageReport from "./scenes/manageReport";
-// import Form from "./scenes/form";
+import axios from "axios";
 import Bar from "./scenes/bar";
 import LoginPage from "./scenes/login";
 
@@ -26,6 +26,19 @@ function App() {
     setIsLoggedIn(isLogin);
   };
 
+  // 로그아웃 처리 함수
+  const handleLogout = async () => {
+    try {
+      // await axios.get(`${process.env.REACT_APP_BASE_URL}/auth/logout`, {
+      console.log("이게 왜 이러는거죠")
+      let result = await axios.get(`/admin/auth/logout`);
+      console.log(result);
+      setIsLoggedIn(false);
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
@@ -35,7 +48,7 @@ function App() {
             <>
               <Sidebar isSidebar={isSidebar} />
               <main className="content">
-                <Topbar handleLogin={handleLogin} />
+                <Topbar handleLogin={handleLogin} handleLogout={handleLogout} />
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/server-status" element={<ServerStatus />} />
