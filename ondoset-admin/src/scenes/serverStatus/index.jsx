@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -8,8 +9,8 @@ import {
 } from "@mui/material";
 import { tokens } from "../../theme";
 import { mockTransactions, mainServerErrorData } from "../../data/mockData";
+import axios from "axios";
 import StatBox from "../../components/StatBox";
-
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors";
@@ -18,6 +19,32 @@ import UpdateIcon from "@mui/icons-material/Update";
 const ServerStatus = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [aiModelStatus, setAiModelStatus] = useState("Unknown"); // 초기 상태값을 Unknown으로 설정
+  const [databaseStatus, setDatabaseStatus] = useState("Unknown"); // 초기 상태값을 Unknown으로 설정
+  const [forecastStatus, setForecastStatus] = useState("Unknown"); // 초기 상태값을 Unknown으로 설정
+
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 한 번만 GET 요청을 보내고 AI 모델의 상태를 가져옴
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/admin/monitor/ai");
+        const { result } = response.data;
+        setAiModelStatus(result); // 응답에서 추출한 result 값을 상태에 저장
+
+        const dbResponse = await axios.get("/admin/monitor/db");
+        const { result: dbResult } = dbResponse.data;
+        setDatabaseStatus(dbResult); // 응답에서 추출한 결과값을 상태에 저장
+
+        const forecastResponse = await axios.get("/admin/monitor/weather");
+        const { result: forecastResult } = forecastResponse.data;
+        setForecastStatus(forecastResult); // 응답에서 추출한 결과값을 상태에 저장
+      } catch (error) {
+        console.error("Error fetching AI model status:", error);
+      }
+    };
+
+    fetchData(); // fetchData 함수 호출
+  }, []); // 빈 배열을 전달하여 useEffect가 컴포넌트가 마운트될 때 한 번만 실행되도록 설정
 
   return (
     <Box m="20px">
@@ -159,12 +186,18 @@ const ServerStatus = () => {
           }}
         >
           <StatBox
-            title="Normal"
+            title={aiModelStatus} // AI 모델의 상태를 title에 반영
             subtitle="AI Model Service Health"
             icon={
-              <CheckCircleIcon
-                sx={{ color: colors.blueAccent[600], fontSize: "94px" }}
-              />
+              aiModelStatus === "Normal" ? ( // AI 모델 상태에 따라 아이콘 변경
+                <CheckCircleIcon
+                  sx={{ color: colors.blueAccent[600], fontSize: "94px" }}
+                />
+              ) : (
+                <RunningWithErrorsIcon
+                  sx={{ color: colors.blueAccent[600], fontSize: "26px" }}
+                />
+              )
             }
           />
         </Box>
@@ -185,12 +218,18 @@ const ServerStatus = () => {
           }}
         >
           <StatBox
-            title="Error"
+            title={databaseStatus} // Database 서비스의 상태를 title에 반영
             subtitle="Database Service Health"
             icon={
-              <RunningWithErrorsIcon
-                sx={{ color: colors.blueAccent[600], fontSize: "26px" }}
-              />
+              databaseStatus === "Normal" ? ( // Database 서비스 상태에 따라 아이콘 변경
+                <CheckCircleIcon
+                  sx={{ color: colors.blueAccent[600], fontSize: "94px" }}
+                />
+              ) : (
+                <RunningWithErrorsIcon
+                  sx={{ color: colors.blueAccent[600], fontSize: "26px" }}
+                />
+              )
             }
           />
         </Box>
@@ -209,12 +248,18 @@ const ServerStatus = () => {
           }}
         >
           <StatBox
-            title="Error"
+            title={forecastStatus} // Forecast 서비스의 상태를 title에 반영
             subtitle="Forecast Service Health"
             icon={
-              <RunningWithErrorsIcon
-                sx={{ color: colors.blueAccent[600], fontSize: "26px" }}
-              />
+              forecastStatus === "Normal" ? ( // Forecast 서비스 상태에 따라 아이콘 변경
+                <CheckCircleIcon
+                  sx={{ color: colors.blueAccent[600], fontSize: "94px" }}
+                />
+              ) : (
+                <RunningWithErrorsIcon
+                  sx={{ color: colors.blueAccent[600], fontSize: "26px" }}
+                />
+              )
             }
           />
         </Box>
