@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   Typography,
@@ -10,7 +11,7 @@ import { tokens } from "../theme";
 import UpdateIcon from "@mui/icons-material/Update";
 // import ondosetLogo from "../assets/ondoset_logo_white.svg";
 
-const StatBox = ({ title, subtitle, icon }) => {
+const StatBox = ({ title, subtitle, icon, onUpdateStatus }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -65,6 +66,7 @@ const StatBox = ({ title, subtitle, icon }) => {
 
       <Box display="flex" mt="4px" mb="20px" alignItems="center">
         <Button
+          onClick={onUpdateStatus} // onUpdateStatus 함수를 클릭 이벤트에 연결
           startIcon={
             <UpdateIcon
               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
