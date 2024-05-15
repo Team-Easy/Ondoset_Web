@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -17,12 +17,41 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { alignProperty } from "@mui/material/styles/cssUtils";
 import UpdateIcon from "@mui/icons-material/Update";
 import UpdateDialog from "./updateDialog.jsx";
+import axios from "axios";
 
 const ManageTag = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null); // 선택된 행 정보를 저장하는 상태 변수
+  const [tagData, setTagData] = useState([]);
+
+  useEffect(() => {
+    fetchTagData();
+  }, []);
+
+  const fetchTagData = () => {
+    axios
+      .get("/admin/tag")
+      .then((response) => {
+        const data = response.data.result;
+        const tags = [];
+        for (const category in data) {
+          data[category].forEach((tagItem) => {
+            tags.push({
+              id: tagItem.tagId,
+              category: category,
+              tag: tagItem.tag,
+              tagId: tagItem.tagId,
+            });
+          });
+        }
+        setTagData(tags);
+      })
+      .catch((error) => {
+        console.error("Error fetching tag data:", error);
+      });
+  };
 
   // 행 선택 시 상태 업데이트
   const handleRowSelection = (row) => {
@@ -62,6 +91,7 @@ const ManageTag = () => {
     console.log("Update performed with data:", updatedData);
     // 여기에 업데이트 작업 수행 로직 추가
     handleUpdateDialogClose(); // 업데이트 작업 완료 후 대화 상자 닫기
+    fetchTagData(); // 데이터 다시 페칭
   };
 
   const columns = [
