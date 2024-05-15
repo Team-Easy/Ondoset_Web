@@ -15,6 +15,7 @@ const MAULineChart = () => {
         const response = await axios.get("/admin/monitor/active-user");
         if (response.data.code === "common_2000") {
           // 데이터가 성공적으로 받아와졌을 때 처리
+          console.log(response.data.result);
           const result = response.data.result.map((item) => ({
             x: new Date(item.period * 1000), // UNIX 타임스탬프를 Date 객체로 변환
             y: item.count,

@@ -14,11 +14,25 @@ import axios from "axios";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [mainStatus, setMainStatus] = useState("Unknown"); // 초기 상태값을 Unknown으로 설정
   const [reportedOOTDCount, setReportedOOTDCount] = useState(0);
+  const [mainServerErrorCount, setMainServerErrorCount] = useState(0);
 
   useEffect(() => {
+    fetchMainStatus();
     fetchReportedOOTDCount();
+    fetchMainServerError();
   }, []);
+
+  const fetchMainStatus = async () => {
+    try {
+      const response = await axios.get("/admin/monitor/db");
+      const { result: result } = response.data;
+      setMainStatus(result);
+    } catch (error) {
+      console.error("Error updating database status:", error);
+    }
+  };
 
   const fetchReportedOOTDCount = () => {
     axios
@@ -30,6 +44,17 @@ const Dashboard = () => {
       .catch((error) => {
         console.error("Error fetching reported OOTD count:", error);
       });
+  };
+
+  const fetchMainServerError = async () => {
+    try {
+      const mainServerErrorResponse = await axios.get("/admin/monitor/main");
+      const { result: mainServerErrorResult } = mainServerErrorResponse.data;
+      setMainServerErrorCount(mainServerErrorResult.length);
+      console.log("메인 서버 에러 페칭 완료");
+    } catch (error) {
+      console.error("Error updating mainServer status:", error);
+    }
   };
 
   return (
@@ -57,13 +82,20 @@ const Dashboard = () => {
           }}
         >
           <StatBox
-            title="Normal"
+            title={mainStatus}
             subtitle="Main Server Health"
             icon={
-              <CheckCircleIcon
-                sx={{ color: colors.blueAccent[600], fontSize: "94px" }}
-              />
+              mainStatus === "Normal" ? ( // 모델 상태에 따라 아이콘 변경
+                <CheckCircleIcon
+                  sx={{ color: colors.blueAccent[600], fontSize: "94px" }}
+                />
+              ) : (
+                <RunningWithErrorsIcon
+                  sx={{ color: colors.blueAccent[600], fontSize: "26px" }}
+                />
+              )
             }
+            onUpdateStatus={fetchMainStatus}
           />
         </Box>
         {/* Reported OOTD */}
@@ -106,13 +138,14 @@ const Dashboard = () => {
           }}
         >
           <StatBox
-            title="32,441"
+            title={mainServerErrorCount}
             subtitle="Error"
             icon={
               <RunningWithErrorsIcon
                 sx={{ color: colors.blueAccent[600], fontSize: "26px" }}
               />
             }
+            onUpdateStatus={fetchMainServerError}
           />
         </Box>
 
