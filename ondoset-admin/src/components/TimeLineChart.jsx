@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { ResponsiveLine } from "@nivo/line";
 import { tokens } from "../theme";
 import { useTheme } from "@mui/material";
-import { timeLinearLineData as data } from "../data/mockData";
 import axios from "axios";
 
 const MAULineChart = () => {
@@ -16,6 +15,7 @@ const MAULineChart = () => {
         const response = await axios.get("/admin/monitor/active-user");
         if (response.data.code === "common_2000") {
           // 데이터가 성공적으로 받아와졌을 때 처리
+          console.log(response.data.result);
           const result = response.data.result.map((item) => ({
             x: new Date(item.period * 1000), // UNIX 타임스탬프를 Date 객체로 변환
             y: item.count,
@@ -69,7 +69,7 @@ const MAULineChart = () => {
         format: "%b %d",
         legend: "time scale",
         legendOffset: -12,
-        tickValues: "every 2 days",
+        tickValues: "every month",
       }}
       axisLeft={{
         legend: "linear scale",

@@ -1,27 +1,61 @@
+import { useState, useEffect } from "react";
 import { Box, Button, Divider, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import { mockTransactions } from "../../data/mockData";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
-import Header from "../../components/Header";
 import MAULineChart from "../../components/TimeLineChart";
-import LineChart from "../../components/LineChart";
 import PieChart from "../../components/PieChart";
-import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
-import ProgressCircle from "../../components/ProgressCircle";
 
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors";
 import UpdateIcon from "@mui/icons-material/Update";
+import axios from "axios";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [mainStatus, setMainStatus] = useState("Unknown"); // 초기 상태값을 Unknown으로 설정
+  const [reportedOOTDCount, setReportedOOTDCount] = useState(0);
+  const [mainServerErrorCount, setMainServerErrorCount] = useState(0);
+
+  useEffect(() => {
+    fetchMainStatus();
+    fetchReportedOOTDCount();
+    fetchMainServerError();
+  }, []);
+
+  const fetchMainStatus = async () => {
+    try {
+      const response = await axios.get("/admin/monitor/db");
+      const { result: result } = response.data;
+      setMainStatus(result);
+    } catch (error) {
+      console.error("Error updating database status:", error);
+    }
+  };
+
+  const fetchReportedOOTDCount = () => {
+    axios
+      .get("/admin/report")
+      .then((response) => {
+        const reportedOOTDCount = response.data.result.length;
+        setReportedOOTDCount(reportedOOTDCount);
+      })
+      .catch((error) => {
+        console.error("Error fetching reported OOTD count:", error);
+      });
+  };
+
+  const fetchMainServerError = async () => {
+    try {
+      const mainServerErrorResponse = await axios.get("/admin/monitor/main");
+      const { result: mainServerErrorResult } = mainServerErrorResponse.data;
+      setMainServerErrorCount(mainServerErrorResult.length);
+      console.log("메인 서버 에러 페칭 완료");
+    } catch (error) {
+      console.error("Error updating mainServer status:", error);
+    }
+  };
 
   return (
     <Box m="20px">
@@ -48,13 +82,20 @@ const Dashboard = () => {
           }}
         >
           <StatBox
-            title="Normal"
+            title={mainStatus}
             subtitle="Main Server Health"
             icon={
-              <CheckCircleIcon
-                sx={{ color: colors.blueAccent[600], fontSize: "94px" }}
-              />
+              mainStatus === "Normal" ? ( // 모델 상태에 따라 아이콘 변경
+                <CheckCircleIcon
+                  sx={{ color: colors.blueAccent[600], fontSize: "94px" }}
+                />
+              ) : (
+                <RunningWithErrorsIcon
+                  sx={{ color: colors.blueAccent[600], fontSize: "26px" }}
+                />
+              )
             }
+            onUpdateStatus={fetchMainStatus}
           />
         </Box>
         {/* Reported OOTD */}
@@ -72,13 +113,14 @@ const Dashboard = () => {
           }}
         >
           <StatBox
-            title="431,225"
+            title={reportedOOTDCount}
             subtitle="Reported OOTD Count"
             icon={
               <AssignmentIcon
                 sx={{ color: colors.blueAccent[600], fontSize: "26px" }}
               />
             }
+            onUpdateStatus={fetchReportedOOTDCount}
           />
         </Box>
         {/* Error */}
@@ -96,13 +138,14 @@ const Dashboard = () => {
           }}
         >
           <StatBox
-            title="32,441"
+            title={mainServerErrorCount}
             subtitle="Error"
             icon={
               <RunningWithErrorsIcon
                 sx={{ color: colors.blueAccent[600], fontSize: "26px" }}
               />
             }
+            onUpdateStatus={fetchMainServerError}
           />
         </Box>
 
@@ -137,13 +180,6 @@ const Dashboard = () => {
                 Last 5 months
               </Typography>
             </Box>
-            {/* <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
-            </Box> */}
           </Box>
           <Box height="70%" width="100%">
             <MAULineChart />

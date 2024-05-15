@@ -1,14 +1,60 @@
+import React, { useState, useEffect } from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../theme";
 import { useTheme } from "@mui/material";
-import { mockPieData as data } from "../data/mockData";
+import axios from "axios";
 
 const PieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/admin/monitor/recording-path");
+        if (response.data.code === "common_2000") {
+          // 데이터가 성공적으로 받아와졌을 때 처리
+          console.log(response.data.result);
+          console.log(response.data.result.past);
+          const data = [
+            {
+              id: "past",
+              label: "Past",
+              value: response.data.result.past,
+              color: "hsl(104, 70%, 50%)",
+            },
+            {
+              id: "ai",
+              label: "AI",
+              value: response.data.result.ai,
+              color: "hsl(162, 70%, 50%)",
+            },
+            {
+              id: "directly",
+              label: "Directly",
+              value: response.data.result.directly,
+              color: "hsl(291, 70%, 50%)",
+            },
+          ];
+
+          setChartData(data);
+        } else {
+          // 요청 실패시 에러 처리
+          console.error("Failed to fetch data:", response.data.message);
+        }
+      } catch (error) {
+        // 네트워크 오류 등으로 인한 요청 실패시 에러 처리
+        console.error("Failed to fetch data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <ResponsivePie
-      data={data}
+      data={chartData}
       theme={{
         axis: {
           domain: {

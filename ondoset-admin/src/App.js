@@ -7,12 +7,10 @@ import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
 import ServerStatus from "./scenes/serverStatus";
 import ManageTag from "./scenes/manageTag";
-import Contacts from "./scenes/contacts";
-import Invoices from "./scenes/invoices";
+// import Contacts from "./scenes/contacts";
 import ManageBlacklist from "./scenes/manageBlacklist";
 import ManageReport from "./scenes/manageReport";
 import axios from "axios";
-import Bar from "./scenes/bar";
 import LoginPage from "./scenes/login";
 
 function App() {
@@ -50,7 +48,7 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/server-status" element={<ServerStatus />} />
-                  <Route path="/manage-ai-model" element={<Contacts />} />
+                  {/* <Route path="/manage-ai-model" element={<Contacts />} /> */}
                   <Route path="/manage-tags" element={<ManageTag />} />
                   <Route
                     path="/manage-blacklist"
