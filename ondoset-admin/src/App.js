@@ -18,7 +18,7 @@ import LoginPage from "./scenes/login";
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 추적하는 상태 변수
+  const [isLoggedIn, setIsLoggedIn] = useState(process.env.REACT_APP_LOGIN_STATE === 'true'); // 로그인 상태를 추적하는 상태 변수
 
   // 로그인 처리 함수
   const handleLogin = (isLogin) => {
