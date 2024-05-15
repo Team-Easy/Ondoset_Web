@@ -11,6 +11,7 @@ import {
   Select,
   MenuItem,
   TextField,
+  Typography,
 } from "@mui/material";
 
 import { useTheme } from "@mui/material/styles";
@@ -51,7 +52,11 @@ const AddTagDialog = ({ open, onClose, onAdd }) => {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Add Tag</DialogTitle>
+      <DialogTitle>
+        <Typography variant="h6" color={colors.grey[100]}>
+          Add Tag
+        </Typography>
+      </DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -82,7 +87,16 @@ const AddTagDialog = ({ open, onClose, onAdd }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={handleAdd}>Add</Button>
+        <Button
+          onClick={handleAdd}
+          sx={{ fontSize: "12px" }}
+          style={{
+            backgroundColor: colors.blueAccent[900],
+            color: colors.grey[100],
+          }}
+        >
+          Add
+        </Button>
       </DialogActions>
     </Dialog>
   );

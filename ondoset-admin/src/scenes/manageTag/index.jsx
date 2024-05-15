@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Box, IconButton, useTheme, Button, Dialog } from "@mui/material";
+import {
+  Box,
+  Typography,
+  IconButton,
+  useTheme,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
@@ -17,7 +28,8 @@ const ManageTag = () => {
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const [openAddDialog, setOpenAddDialog] = useState(false); // 추가 다이얼로그 상태
   const [selectedRow, setSelectedRow] = useState(null); // 선택된 행 정보를 저장하는 상태 변수
-  const [tagData, setTagData] = useState([]);
+  const [tagData, setTagData] = useState([]); // 표시되는 태그 정보들
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false); // 삭제 화면 상자 열림 여부 상태
 
   useEffect(() => {
     fetchTagData();
@@ -51,11 +63,6 @@ const ManageTag = () => {
     setSelectedRow(row);
   };
 
-  const handleDelete = (id) => {
-    // 삭제 작업 수행
-    console.log("Delete item with ID:", id);
-  };
-
   // ADD
 
   const handleAddRow = () => {
@@ -63,7 +70,7 @@ const ManageTag = () => {
     setOpenAddDialog(true);
   };
 
-  const handleAdd = (addedData) => {
+  const handleAdd = () => {
     // 데이터에 추가된 항목 추가
     fetchTagData();
   };
@@ -91,6 +98,46 @@ const ManageTag = () => {
   const handleUpdateDialogClose = () => {
     // 업데이트 대화 상자 닫기
     setOpenUpdateDialog(false);
+    fetchTagData();
+  };
+
+  // DELETE
+  const handleDelete = (id) => {
+    // 삭제 작업 수행
+    console.log("Delete item with ID:", id);
+    setSelectedRow(id);
+    setOpenDeleteDialog(true);
+  };
+
+  // 삭제 작업 수행
+  const handleDeleteConfirm = () => {
+    // 선택된 행의 tagId 가져오기
+    const tagIdToDelete = selectedRow.tagId;
+
+    // 서버에 DELETE 요청 보내기
+    axios
+      .delete(`/admin/tag/${tagIdToDelete}`)
+      .then((response) => {
+        console.log(response.data);
+        // 삭제 성공 시
+        if (response.data.code === "common_2000") {
+          // 여기에서 성공 메시지 처리 혹은 다른 작업 수행 가능
+          console.log("Tag deleted successfully");
+          // 삭제 후 데이터 다시 페칭
+          fetchTagData();
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting tag:", error);
+      });
+
+    // 삭제 화면 상자 닫기
+    handleDeleteDialogClose();
+  };
+
+  const handleDeleteDialogClose = () => {
+    // 삭제 화면 상자 닫기
+    setOpenDeleteDialog(false);
     fetchTagData();
   };
 
@@ -155,7 +202,7 @@ const ManageTag = () => {
         <>
           <IconButton
             aria-label="Delete"
-            onClick={() => handleDelete(params.row.id)}
+            onClick={() => handleDelete(params.row)}
           >
             <DeleteIcon />
           </IconButton>
@@ -266,6 +313,40 @@ const ManageTag = () => {
         rowData={selectedRow}
         onUpdate={handleUpdate}
       />
+      {/* 삭제 화면 상자 */}
+      <Dialog
+        open={openDeleteDialog}
+        onClose={handleDeleteDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle>
+          <Typography variant="h6" color={colors.grey[100]}>
+            Delete Tag
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this tag?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteDialogClose} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDeleteConfirm}
+            sx={{ fontSize: "12px" }}
+            style={{
+              backgroundColor: colors.blueAccent[900],
+              color: colors.grey[100],
+            }}
+            autoFocus
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
