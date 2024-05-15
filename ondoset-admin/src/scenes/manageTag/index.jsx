@@ -16,12 +16,18 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { alignProperty } from "@mui/material/styles/cssUtils";
 import UpdateIcon from "@mui/icons-material/Update";
+import UpdateDialog from "./updateDialog.jsx";
 
 const ManageTag = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null); // 선택된 행 정보를 저장하는 상태 변수
+
+  // 행 선택 시 상태 업데이트
+  const handleRowSelection = (row) => {
+    setSelectedRow(row);
+  };
 
   const handleAddRow = () => {
     // 새로운 항목 추가
@@ -34,13 +40,28 @@ const ManageTag = () => {
     console.log("Edit item with ID:", id);
   };
 
-  const handleCloseUpdateDialog = () => {
-    setOpenUpdateDialog(false);
-  };
-
   const handleDelete = (id) => {
     // 삭제 작업 수행
     console.log("Delete item with ID:", id);
+  };
+
+  const handleUpdateClick = (row) => {
+    handleRowSelection(row);
+    // 업데이트 버튼 클릭 시 업데이트 대화 상자 열기
+    setOpenUpdateDialog(true);
+  };
+
+  const handleUpdateDialogClose = () => {
+    // 업데이트 대화 상자 닫기
+    // 여기에 다시 데이터 페칭하는거 넣자
+    setOpenUpdateDialog(false);
+  };
+
+  const handleUpdate = (updatedData) => {
+    // 업데이트 작업 수행
+    console.log("Update performed with data:", updatedData);
+    // 여기에 업데이트 작업 수행 로직 추가
+    handleUpdateDialogClose(); // 업데이트 작업 완료 후 대화 상자 닫기
   };
 
   const columns = [
@@ -85,7 +106,7 @@ const ManageTag = () => {
         <>
           <IconButton
             aria-label="Edit"
-            onClick={() => handleEdit(params.row.id)}
+            onClick={() => handleUpdateClick(params.row)}
           >
             <EditIcon />
           </IconButton>
@@ -204,15 +225,12 @@ const ManageTag = () => {
           </Button>
         </Box>
       </Box>
-      <Dialog open={openUpdateDialog} onClose={handleCloseUpdateDialog}>
-        {/* 대화 상자 내용 작성 */}
-        <Box p={2}>
-          <Typography variant="h6" color={colors.blueAccent[900]} mb={2}>
-            Update Dialog Content
-          </Typography>
-          {/* 추가적인 내용을 작성할 수 있습니다. */}
-        </Box>
-      </Dialog>
+      <UpdateDialog
+        open={openUpdateDialog}
+        onClose={handleUpdateDialogClose}
+        rowData={selectedRow}
+        onUpdate={handleUpdate}
+      />
     </Box>
   );
 };
