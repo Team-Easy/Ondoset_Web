@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Typography,
-  IconButton,
-  useTheme,
-  Button,
-  Dialog,
-} from "@mui/material";
+import { Box, IconButton, useTheme, Button, Dialog } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataInvoices, tagData } from "../../data/mockData";
 import Header from "../../components/Header";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { alignProperty } from "@mui/material/styles/cssUtils";
 import UpdateIcon from "@mui/icons-material/Update";
+import AddTagDialog from "./addTagDialog.jsx";
 import UpdateDialog from "./updateDialog.jsx";
 import axios from "axios";
 
@@ -23,6 +15,7 @@ const ManageTag = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+  const [openAddDialog, setOpenAddDialog] = useState(false); // 추가 다이얼로그 상태
   const [selectedRow, setSelectedRow] = useState(null); // 선택된 행 정보를 저장하는 상태 변수
   const [tagData, setTagData] = useState([]);
 
@@ -58,32 +51,34 @@ const ManageTag = () => {
     setSelectedRow(row);
   };
 
-  const handleAddRow = () => {
-    // 새로운 항목 추가
-    console.log("Create item");
-  };
-
-  const handleEdit = (id) => {
-    // 수정 작업 수행
-    setOpenUpdateDialog(true);
-    console.log("Edit item with ID:", id);
-  };
-
   const handleDelete = (id) => {
     // 삭제 작업 수행
     console.log("Delete item with ID:", id);
   };
 
+  // ADD
+
+  const handleAddRow = () => {
+    // 새로운 항목 추가
+    setOpenAddDialog(true);
+  };
+
+  const handleAdd = (addedData) => {
+    // 데이터에 추가된 항목 추가
+    fetchTagData();
+  };
+
+  const handleAddDialogClose = () => {
+    setOpenAddDialog(false);
+    // 데이터 다시 페칭
+    fetchTagData();
+  };
+
+  // UPDATE
   const handleUpdateClick = (row) => {
     handleRowSelection(row);
     // 업데이트 버튼 클릭 시 업데이트 대화 상자 열기
     setOpenUpdateDialog(true);
-  };
-
-  const handleUpdateDialogClose = () => {
-    // 업데이트 대화 상자 닫기
-    // 여기에 다시 데이터 페칭하는거 넣자
-    setOpenUpdateDialog(false);
   };
 
   const handleUpdate = (updatedData) => {
@@ -91,7 +86,12 @@ const ManageTag = () => {
     console.log("Update performed with data:", updatedData);
     // 여기에 업데이트 작업 수행 로직 추가
     handleUpdateDialogClose(); // 업데이트 작업 완료 후 대화 상자 닫기
-    fetchTagData(); // 데이터 다시 페칭
+  };
+
+  const handleUpdateDialogClose = () => {
+    // 업데이트 대화 상자 닫기
+    setOpenUpdateDialog(false);
+    fetchTagData();
   };
 
   const columns = [
@@ -255,6 +255,11 @@ const ManageTag = () => {
           </Button>
         </Box>
       </Box>
+      <AddTagDialog
+        open={openAddDialog}
+        onClose={handleAddDialogClose}
+        onAdd={handleAdd}
+      />
       <UpdateDialog
         open={openUpdateDialog}
         onClose={handleUpdateDialogClose}
