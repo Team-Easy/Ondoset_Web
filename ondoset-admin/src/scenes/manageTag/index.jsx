@@ -1,4 +1,12 @@
-import { Box, Typography, IconButton, useTheme, Button } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Box,
+  Typography,
+  IconButton,
+  useTheme,
+  Button,
+  Dialog,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataInvoices, tagData } from "../../data/mockData";
@@ -13,6 +21,8 @@ const ManageTag = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+
   const handleAddRow = () => {
     // 새로운 항목 추가
     console.log("Create item");
@@ -20,13 +30,19 @@ const ManageTag = () => {
 
   const handleEdit = (id) => {
     // 수정 작업 수행
+    setOpenUpdateDialog(true);
     console.log("Edit item with ID:", id);
+  };
+
+  const handleCloseUpdateDialog = () => {
+    setOpenUpdateDialog(false);
   };
 
   const handleDelete = (id) => {
     // 삭제 작업 수행
     console.log("Delete item with ID:", id);
   };
+
   const columns = [
     {
       field: "id",
@@ -188,6 +204,15 @@ const ManageTag = () => {
           </Button>
         </Box>
       </Box>
+      <Dialog open={openUpdateDialog} onClose={handleCloseUpdateDialog}>
+        {/* 대화 상자 내용 작성 */}
+        <Box p={2}>
+          <Typography variant="h6" color={colors.blueAccent[900]} mb={2}>
+            Update Dialog Content
+          </Typography>
+          {/* 추가적인 내용을 작성할 수 있습니다. */}
+        </Box>
+      </Dialog>
     </Box>
   );
 };
