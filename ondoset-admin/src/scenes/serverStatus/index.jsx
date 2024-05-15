@@ -8,7 +8,7 @@ import {
   SvgIcon,
 } from "@mui/material";
 import { tokens } from "../../theme";
-import { mockTransactions, mainServerErrorData } from "../../data/mockData";
+// import { mockTransactions, mainServerErrorData } from "../../data/mockData";
 import axios from "axios";
 import StatBox from "../../components/StatBox";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -22,6 +22,7 @@ const ServerStatus = () => {
   const [aiModelStatus, setAiModelStatus] = useState("Unknown"); // 초기 상태값을 Unknown으로 설정
   const [databaseStatus, setDatabaseStatus] = useState("Unknown"); // 초기 상태값을 Unknown으로 설정
   const [forecastStatus, setForecastStatus] = useState("Unknown"); // 초기 상태값을 Unknown으로 설정
+  const [mainServerErrorData, setMainServerErrorData] = useState([]);
 
   useEffect(() => {
     // 컴포넌트가 마운트될 때 한 번만 GET 요청을 보내고 AI 모델의 상태를 가져옴
@@ -38,8 +39,12 @@ const ServerStatus = () => {
         const forecastResponse = await axios.get("/admin/monitor/weather");
         const { result: forecastResult } = forecastResponse.data;
         setForecastStatus(forecastResult); // 응답에서 추출한 결과값을 상태에 저장
+
+        const mainServerErrorResponse = await axios.get("/admin/monitor/main");
+        const { result: mainServerErrorResult } = mainServerErrorResponse.data;
+        setMainServerErrorData(mainServerErrorResult);
       } catch (error) {
-        console.error("Error fetching AI model status:", error);
+        console.error("Error fetching: ", error);
       }
     };
 
@@ -53,7 +58,7 @@ const ServerStatus = () => {
       setAiModelStatus(result);
       console.log("AI 페칭 완료");
     } catch (error) {
-      console.error("Error updating database status:", error);
+      console.error("Error updating AiModel status:", error);
     }
   };
 
@@ -76,6 +81,17 @@ const ServerStatus = () => {
       console.log("기상청 페칭 완료");
     } catch (error) {
       console.error("Error updating forecast status:", error);
+    }
+  };
+
+  const handleUpdateMainServerError = async () => {
+    try {
+      const mainServerErrorResponse = await axios.get("/admin/monitor/main");
+      const { result: mainServerErrorResult } = mainServerErrorResponse.data;
+      setMainServerErrorData(mainServerErrorResult);
+      console.log("메인 서버 에러 페칭 완료");
+    } catch (error) {
+      console.error("Error updating mainServer status:", error);
     }
   };
 
@@ -127,6 +143,7 @@ const ServerStatus = () => {
               style={{
                 color: colors.grey[100],
               }}
+              onClick={handleUpdateMainServerError}
             >
               Update Status
             </Button>
