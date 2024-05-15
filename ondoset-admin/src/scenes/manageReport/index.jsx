@@ -39,7 +39,7 @@ const ManageReport = () => {
       .then((response) => {
         const data = response.data.result;
         const ootds = [];
-        console.log(data);
+        // console.log(data);
         data.forEach((item) => {
           ootds.push({
             ootdId: item.ootdId,

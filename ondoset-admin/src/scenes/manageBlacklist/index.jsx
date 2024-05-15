@@ -1,4 +1,17 @@
-import { Box, IconButton, useTheme, Button, Divider } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Typography,
+  IconButton,
+  useTheme,
+  Button,
+  Divider,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import {
@@ -10,10 +23,62 @@ import Header from "../../components/Header";
 import EditIcon from "@mui/icons-material/Edit";
 import PreviewIcon from "@mui/icons-material/Preview";
 import UpdateIcon from "@mui/icons-material/Update";
+import axios from "axios";
 
 const ManageBlacklist = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [blacklistData, setBlacklistData] = useState([]); // 표시되는 이용 제한자 정보들
+  const [selectedBlacklistRow, setSelectedBlacklistRow] = useState(null); // 선택된 블랙리스트 행 정보를 저장하는 상태 변수
+  const [offenderListData, setOffenderListData] = useState([]); // 표시되는 피신고자 정보들
+  const [selectedOffenderRow, setSelectedOffenderRow] = useState(null); // 선택된 피신고자 행 정보를 저장하는 상태 변수
+  const [reporterListData, setReporterListData] = useState([]); // 표시되는 신고자 정보들
+  const [selectedReporterRow, setSelectedReporterRow] = useState(null); // 선택된 신고자 행 정보를 저장하는 상태 변수
+
+  useEffect(() => {
+    fetchBlacklistData();
+    fetchOffenderListData();
+    fetchReporterListData();
+  }, []);
+
+  const fetchBlacklistData = () => {
+    axios
+      .get("/admin/blacklist")
+      .then((response) => {
+        const data = response.data.result;
+        const blacklist = data;
+        setBlacklistData(blacklist);
+      })
+      .catch((error) => {
+        console.error("Error fetching tag data:", error);
+      });
+  };
+
+  const fetchOffenderListData = () => {
+    axios
+      .get("/admin/blacklist/reported")
+      .then((response) => {
+        const data = response.data.result;
+        const offenderList = data;
+        setOffenderListData(offenderList);
+      })
+      .catch((error) => {
+        console.error("Error fetching tag data:", error);
+      });
+  };
+
+  const fetchReporterListData = () => {
+    axios
+      .get("/admin/blacklist/reporter")
+      .then((response) => {
+        const data = response.data.result;
+        const reporterList = data;
+        setReporterListData(reporterList);
+      })
+      .catch((error) => {
+        console.error("Error fetching tag data:", error);
+      });
+  };
 
   const handleAddRow = () => {
     // 새로운 항목 추가
@@ -185,7 +250,7 @@ const ManageBlacklist = () => {
           }}
         >
           <DataGrid
-            rows={mockBlacklistData}
+            rows={blacklistData}
             columns={blacklistColumns}
             getRowId={(row) => row.memberId}
             disableColumnFilter
@@ -261,7 +326,7 @@ const ManageBlacklist = () => {
           }}
         >
           <DataGrid
-            rows={mockOffenderListData}
+            rows={offenderListData}
             columns={reportListColumns}
             getRowId={(row) => row.memberId}
             disableColumnFilter
@@ -336,7 +401,7 @@ const ManageBlacklist = () => {
           }}
         >
           <DataGrid
-            rows={mockReporterListData}
+            rows={reporterListData}
             columns={reportListColumns}
             getRowId={(row) => row.memberId}
             disableColumnFilter
