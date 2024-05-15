@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { ResponsiveLine } from "@nivo/line";
 import { tokens } from "../theme";
 import { useTheme } from "@mui/material";
-import { timeLinearLineData as data } from "../data/mockData";
 import axios from "axios";
 
 const MAULineChart = () => {
@@ -69,7 +68,7 @@ const MAULineChart = () => {
         format: "%b %d",
         legend: "time scale",
         legendOffset: -12,
-        tickValues: "every 2 days",
+        tickValues: "every month",
       }}
       axisLeft={{
         legend: "linear scale",
