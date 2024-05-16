@@ -11,6 +11,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  TextField,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
@@ -23,17 +24,19 @@ import Header from "../../components/Header";
 import EditIcon from "@mui/icons-material/Edit";
 import PreviewIcon from "@mui/icons-material/Preview";
 import UpdateIcon from "@mui/icons-material/Update";
+import OOTDCard from "./ootdDialog";
 import axios from "axios";
 
 const ManageBlacklist = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [blacklistData, setBlacklistData] = useState([]); // 표시되는 이용 제한자 정보들
-  const [selectedBlacklistRow, setSelectedBlacklistRow] = useState(null); // 선택된 블랙리스트 행 정보를 저장하는 상태 변수
   const [offenderListData, setOffenderListData] = useState([]); // 표시되는 피신고자 정보들
-  const [selectedOffenderRow, setSelectedOffenderRow] = useState(null); // 선택된 피신고자 행 정보를 저장하는 상태 변수
   const [reporterListData, setReporterListData] = useState([]); // 표시되는 신고자 정보들
-  const [selectedReporterRow, setSelectedReporterRow] = useState(null); // 선택된 신고자 행 정보를 저장하는 상태 변수
+  const [selectedRow, setSelectedRow] = useState(null); // 선택된 행 정보를 저장하는 상태 변수
+  const [blockTime, setBlockTime] = useState(null); // 정지 기간 정보를 저장하는 상태 변수
+  const [openChangeBlockTime, setOpenChangeBlockTime] = useState(false); // 정지 기간 화면 상자 열림 여부 상태
+  const [openSeeOOTDs, setOpenSeeOOTDs] = useState(false); // OOTD 게시물 화면 상자 열림 여부 상태
 
   useEffect(() => {
     fetchBlacklistData();
@@ -60,6 +63,7 @@ const ManageBlacklist = () => {
       .then((response) => {
         const data = response.data.result;
         const offenderList = data;
+        console.log(data);
         setOffenderListData(offenderList);
       })
       .catch((error) => {
@@ -73,6 +77,7 @@ const ManageBlacklist = () => {
       .then((response) => {
         const data = response.data.result;
         const reporterList = data;
+        console.log(data);
         setReporterListData(reporterList);
       })
       .catch((error) => {
@@ -80,20 +85,55 @@ const ManageBlacklist = () => {
       });
   };
 
-  const handleAddRow = () => {
-    // 새로운 항목 추가
-    console.log("Create item");
+  const handleChangeBlockTime = (id) => {
+    setSelectedRow(id);
+    setOpenChangeBlockTime(true);
   };
 
-  const handleEdit = (id) => {
-    // 수정 작업 수행
-    console.log("Edit item with ID:", id);
+  // 정지 기간 업데이트 작업 수행
+  const handleChangeBlockTimeConfirm = () => {
+    // 선택된 행의 Id 가져오기
+    const id = selectedRow.memberId;
+
+    const requestData = {
+      banPeriod: blockTime,
+    };
+
+    // 서버에 UPDATE 요청 보내기
+    axios
+      .put(`/admin/blacklist/${id}`, requestData)
+      .then((response) => {
+        console.log(response.data);
+        // 삭제 성공 시
+        if (response.data.code === "common_2000") {
+          console.log("blacklist blockTime changed");
+          fetchBlacklistData();
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting tag:", error);
+      });
+
+    setOpenChangeBlockTime(false);
   };
 
-  const handleDelete = (id) => {
-    // 삭제 작업 수행
-    console.log("Delete item with ID:", id);
+  const handleChangeBlockTimeDialogClose = () => {
+    // 삭제 화면 상자 닫기
+    setOpenChangeBlockTime(false);
+    fetchBlacklistData();
   };
+
+  const handleBlockTimeChange = (event) => {
+    setBlockTime(event.target.value);
+  };
+
+  // OOTD 화면에 보여주기 위해 선택
+  const handleSeeOOTD = (id) => {
+    console.log(id);
+    setSelectedRow(id);
+    setOpenSeeOOTDs(true);
+  };
+
   const blacklistColumns = [
     {
       field: "memberId",
@@ -130,7 +170,7 @@ const ManageBlacklist = () => {
         <>
           <IconButton
             aria-label="Edit"
-            onClick={() => handleEdit(params.row.id)}
+            onClick={() => handleChangeBlockTime(params.row)}
           >
             <EditIcon />
           </IconButton>
@@ -138,6 +178,7 @@ const ManageBlacklist = () => {
       ),
     },
   ];
+
   const reportListColumns = [
     {
       field: "memberId",
@@ -173,7 +214,7 @@ const ManageBlacklist = () => {
         <>
           <IconButton
             aria-label="Preview"
-            onClick={() => handleEdit(params.row.id)}
+            onClick={() => handleSeeOOTD(params.row)}
           >
             <PreviewIcon />
           </IconButton>
@@ -188,7 +229,7 @@ const ManageBlacklist = () => {
         <>
           <IconButton
             aria-label="Edit"
-            onClick={() => handleEdit(params.row.id)}
+            onClick={() => handleChangeBlockTime(params.row)}
           >
             <EditIcon />
           </IconButton>
@@ -425,6 +466,65 @@ const ManageBlacklist = () => {
           </Button>
         </Box>
       </Box>
+      {/* OOTD 보여주기 화면 다이얼로그 */}
+      <Dialog
+        open={openSeeOOTDs}
+        onClose={() => setOpenSeeOOTDs(false)}
+        fullWidth
+      >
+        <DialogTitle>
+          <Typography variant="h6">OOTD Details</Typography>
+        </DialogTitle>
+        <DialogContent>
+          {selectedRow && <OOTDCard memberId={selectedRow.memberId} />}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenSeeOOTDs(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
+      {/*  정지 기간 변경 */}
+      <Dialog
+        open={openChangeBlockTime}
+        onClose={handleChangeBlockTimeDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle>
+          <Typography variant="h6" color={colors.grey[100]}>
+            Change Block Time
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            id="alert-dialog-description"
+            sx={{ paddingBottom: "10px" }}
+          >
+            Are you sure you want to change block time?
+          </DialogContentText>
+          <TextField
+            label="Block Time"
+            value={blockTime}
+            onChange={handleBlockTimeChange}
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleChangeBlockTimeDialogClose} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleChangeBlockTimeConfirm}
+            sx={{ fontSize: "12px" }}
+            style={{
+              backgroundColor: colors.blueAccent[900],
+              color: colors.grey[100],
+            }}
+            autoFocus
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
