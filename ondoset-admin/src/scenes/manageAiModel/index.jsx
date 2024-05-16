@@ -29,6 +29,7 @@ const ManageAiModel = () => {
   const [reportedOOTDCount, setReportedOOTDCount] = useState(0);
   const [mainServerErrorCount, setMainServerErrorCount] = useState(0);
   const [aiModelData, setAiModelData] = useState([]); // 표시되는 AI Model 정보들
+  const [aiPerformanceData, setAiPerformanceData] = useState([]); // 표시되는 AI Model Performance 정보들
 
   useEffect(() => {
     fetchMainStatus();
@@ -38,6 +39,17 @@ const ManageAiModel = () => {
         releasedDate: "2024-05-12T17:23:59",
         version: 1.0,
         dataCount: 1339,
+      },
+    ]);
+    setAiPerformanceData([
+      {
+        modelId: 1,
+        version: 1.0,
+        date: "2024-05-16T06:49:32",
+        loss: 182.91101623724484,
+        precision: 0.23188405797101447,
+        recall: 0.13083160800552104,
+        f1: 0.16194867933998366,
       },
     ]);
   }, []);
@@ -63,7 +75,7 @@ const ManageAiModel = () => {
     }
   };
 
-  const reportedOOTDColumns = [
+  const aiModelColumns = [
     {
       field: "releasedDate",
       headerName: "Released Date",
@@ -116,6 +128,58 @@ const ManageAiModel = () => {
           </IconButton>
         </>
       ),
+    },
+  ];
+
+  const aiPerformanceColumns = [
+    {
+      field: "modelId",
+      headerName: "modelId",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
+      field: "version",
+      headerName: "Version",
+      headerAlign: "center",
+      align: "center",
+      flex: 2,
+    },
+    {
+      field: "date",
+      headerName: "date",
+      headerAlign: "center",
+      align: "center",
+      flex: 2,
+    },
+    {
+      field: "loss",
+      headerName: "loss",
+      headerAlign: "center",
+      align: "center",
+      flex: 2,
+    },
+    {
+      field: "precision",
+      headerName: "precision",
+      headerAlign: "center",
+      align: "center",
+      flex: 2,
+    },
+    {
+      field: "recall",
+      headerName: "recall",
+      headerAlign: "center",
+      align: "center",
+      flex: 2,
+    },
+    {
+      field: "f1",
+      headerName: "f1",
+      headerAlign: "center",
+      align: "center",
+      flex: 2,
     },
   ];
 
@@ -233,7 +297,7 @@ const ManageAiModel = () => {
             >
               <DataGrid
                 rows={aiModelData}
-                columns={reportedOOTDColumns}
+                columns={aiModelColumns}
                 getRowId={(row) => row.version}
                 disableColumnFilter
               />
@@ -264,14 +328,97 @@ const ManageAiModel = () => {
           gridRow="span 3"
           backgroundColor={colors.primary[400]}
           display="flex"
+          flexDirection="column"
           alignItems="flex-start"
-          justifyContent="center"
+          justifyContent="flex-start"
           sx={{
             boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
             borderRadius: "5px",
             height: "100%",
           }}
-        ></Box>
+        >
+          {/* Blacklist */}
+          <Box
+            flexGrow={1}
+            width="100%"
+            // m="20px"
+            // sx={{
+            //   paddingTop: "1px",
+            //   boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
+            //   borderRadius: "5px",
+            // }}
+          >
+            {/* header */}
+            <Box
+              sx={{
+                margin: "20px 20px 20px 20px",
+              }}
+            >
+              <AIHeader
+                title="AI Model Performance Metrics Table - Collaborative Filtering Model"
+                subtitle="Overview of evaluation metrics usd to assess the performance of an AI model"
+              />
+            </Box>
+            {/* dataGrid */}
+            <Box
+              m="0 0 0 0"
+              width="100%"
+              height="57%"
+              sx={{
+                "& .MuiDataGrid-root": {
+                  border: "none",
+                },
+                "& .MuiDataGrid-cell": {
+                  borderBottom: "none",
+                },
+                "& .name-column--cell": {
+                  color: colors.greenAccent[300],
+                },
+                "& .MuiDataGrid-columnHeaders": {
+                  backgroundColor: colors.blueAccent[900],
+                  borderBottom: "none",
+                },
+                "& .MuiDataGrid-virtualScroller": {
+                  backgroundColor: colors.primary[400],
+                },
+                "& .MuiDataGrid-footerContainer": {
+                  borderTop: "none",
+                  backgroundColor: colors.blueAccent[900],
+                },
+                "& .MuiCheckbox-root": {
+                  color: `${colors.greenAccent[200]} !important`,
+                },
+                "& .MuiDataGrid-selectedRowCount": {
+                  display: "none",
+                },
+              }}
+            >
+              <DataGrid
+                rows={aiPerformanceData}
+                columns={aiPerformanceColumns}
+                getRowId={(row) => row.modelId}
+                disableColumnFilter
+              />
+            </Box>
+            {/* <Box flex={1} p={0} /> */}
+            <Divider />
+            {/* footer */}
+            <Box display="flex" p={1} alignItems="center">
+              <Button
+                startIcon={
+                  <UpdateIcon
+                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                  />
+                }
+                style={{
+                  color: colors.grey[100],
+                }}
+              >
+                Update Status
+              </Button>
+            </Box>
+          </Box>
+        </Box>
         {/* ROW 3 */}
         {/* AI Train */}
         <Box
