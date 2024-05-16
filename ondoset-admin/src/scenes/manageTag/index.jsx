@@ -162,7 +162,7 @@ const ManageTag = () => {
       cellClassName: "name-column--cell",
       headerAlign: "center",
       align: "center",
-      flex: 1.5,
+      flex: 2,
     },
     {
       field: "tagId",
@@ -171,7 +171,7 @@ const ManageTag = () => {
       align: "center",
       flex: 1,
     },
-    { field: "spacer", headerName: "", flex: 12 },
+    { field: "spacer", headerName: "", flex: 11 },
     {
       field: "actions_update",
       headerName: "Update",
