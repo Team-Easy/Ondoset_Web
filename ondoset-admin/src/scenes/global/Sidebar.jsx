@@ -123,13 +123,13 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            {/* <Item
+            <Item
               title="Manage AI Model"
               to="/manage-ai-model"
-              icon={<ContactsOutlinedIcon />}
+              icon={<CalendarTodayOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            /> */}
+            />
             <Item
               title="Manage Tags"
               to="/manage-tags"
