@@ -473,7 +473,9 @@ const ManageBlacklist = () => {
         fullWidth
       >
         <DialogTitle>
-          <Typography variant="h6">OOTD Details</Typography>
+          <Typography variant="h6" color={colors.grey[100]}>
+            OOTD Details
+          </Typography>
         </DialogTitle>
         <DialogContent>
           {selectedRow && <OOTDCard memberId={selectedRow.memberId} />}

@@ -16,7 +16,11 @@ const OOTDCard = ({ memberId }) => {
         `/admin/blacklist/reporter-list?memberId=${memberId}&lastPage=-1`
       );
       console.log(response);
-      setOotdList(response.data.result.ootdList);
+      setOotdList([
+        response.data.result.ootdList[0],
+        response.data.result.ootdList[0],
+        response.data.result.ootdList[0],
+      ]);
     } catch (error) {
       console.error("Error fetching OOTD list:", error);
     }
@@ -30,7 +34,7 @@ const OOTDCard = ({ memberId }) => {
             <CardMedia
               component="img"
               height="140"
-              image={ootd.imageURL}
+              image={process.env.REACT_APP_IMAGE_BASE_URL + ootd.imageURL}
               alt="OOTD Image"
             />
             <CardContent>
