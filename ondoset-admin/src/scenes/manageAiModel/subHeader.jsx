@@ -1,15 +1,15 @@
 import { Typography, Box, useTheme, Divider } from "@mui/material";
 import { tokens } from "../../theme";
 
-const AIHeader = ({ title, subtitle }) => {
+const AISubHeader = ({ title, subtitle }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
     <Box>
       <Typography
-        variant="h3"
+        variant="h4"
         color={colors.grey[100]}
-        fontWeight="bold"
+        // fontWeight="bold"
         sx={{ m: "0 0 5px 0" }}
       >
         {title}
@@ -23,4 +23,4 @@ const AIHeader = ({ title, subtitle }) => {
   );
 };
 
-export default AIHeader;
+export default AISubHeader;

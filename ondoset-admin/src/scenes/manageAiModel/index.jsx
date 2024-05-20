@@ -4,21 +4,22 @@ import {
   Button,
   Divider,
   Typography,
+  TextField,
+  Grid,
   useTheme,
   IconButton,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import MAULineChart from "../../components/TimeLineChart";
-import PieChart from "../../components/PieChart";
 import StatBox from "../../components/StatBox";
-
+import TRCLineChart1 from "../../components/TrainResultChart1";
+import TRCLineChart2 from "../../components/TrainResultChart2";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import AssignmentIcon from "@mui/icons-material/Assignment";
 import AIHeader from "./header";
 import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors";
 import UpdateIcon from "@mui/icons-material/Update";
 import EditIcon from "@mui/icons-material/Edit";
+import AISubHeader from "./subHeader";
 import axios from "axios";
 
 const ManageAiModel = () => {
@@ -30,21 +31,14 @@ const ManageAiModel = () => {
   const [mainServerErrorCount, setMainServerErrorCount] = useState(0);
   const [aiModelData, setAiModelData] = useState([]); // 표시되는 AI Model 정보들
   const [aiPerformanceData, setAiPerformanceData] = useState([]); // 표시되는 AI Model Performance 정보들
+  const [learningRate, setLearningRate] = useState("");
+  const [latentVectorSize, setLatentVectorSize] = useState("");
+  const [regularizationParameter, setRegularizationParameter] = useState("");
+  const [iteration, setIteration] = useState("");
 
   useEffect(() => {
-    fetchMainStatus();
     handleUpdateAiModelStatus();
   }, []);
-
-  const fetchMainStatus = async () => {
-    try {
-      const response = await axios.get("/admin/monitor/db");
-      const { result: result } = response.data;
-      setMainStatus(result);
-    } catch (error) {
-      console.error("Error updating database status:", error);
-    }
-  };
 
   const handleUpdateAiModelStatus = async () => {
     try {
@@ -54,6 +48,31 @@ const ManageAiModel = () => {
       console.log("AI 페칭 완료");
     } catch (error) {
       console.error("Error updating AiModel status:", error);
+    }
+  };
+
+  const handleNumberInputChange = (event) => {
+    const { value } = event.target;
+    if (/^\d*\.?\d*$/.test(value)) {
+      event.target.value = value;
+    } else {
+      event.preventDefault();
+    }
+  };
+
+  const handlePostRequest = async () => {
+    const data = {
+      learningRate,
+      latentVectorSize,
+      regularizationParameter,
+      iteration,
+    };
+
+    try {
+      const response = await axios.post("/admin/ai/train", data);
+      console.log("POST 요청 성공:", response.data);
+    } catch (error) {
+      console.error("POST 요청 실패:", error);
     }
   };
 
@@ -221,7 +240,6 @@ const ManageAiModel = () => {
             height: "100%",
           }}
         >
-          {/* Blacklist */}
           <Box
             flexGrow={1}
             width="100%"
@@ -385,7 +403,16 @@ const ManageAiModel = () => {
             {/* <Box flex={1} p={0} /> */}
             <Divider />
             {/* footer */}
-            <Box display="flex" p={1} alignItems="center">
+            <Box
+              display="flex"
+              p={1}
+              alignItems="center"
+              sx={
+                {
+                  // margin: "20px 20px 20px 20px",
+                }
+              }
+            >
               <Button
                 startIcon={
                   <UpdateIcon
@@ -403,19 +430,140 @@ const ManageAiModel = () => {
         </Box>
         {/* ROW 3 */}
         {/* AI Train */}
-        {/* <Box
+        {/* AI Train */}
+        <Box
           gridColumn="span 12"
-          gridRow="span 6"
+          gridRow="span 9"
           backgroundColor={colors.primary[400]}
           display="flex"
+          flexDirection="column"
           alignItems="flex-start"
-          justifyContent="center"
+          justifyContent="flex-start"
           sx={{
             boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
             borderRadius: "5px",
             height: "100%",
           }}
-        ></Box> */}
+        >
+          {/* header */}
+          <Box
+            sx={{
+              margin: "20px 20px 20px 20px",
+            }}
+          >
+            <AIHeader title="AI Model Training" />
+          </Box>
+          {/* sub header */}
+          <Box
+            sx={{
+              margin: "20px 20px 20px 20px",
+            }}
+          >
+            <AISubHeader title="Collaborative Filtering" />
+          </Box>
+          {/* TextFields */}
+          <Box
+            sx={{
+              width: "100%", // Ensure full width of the container
+              padding: "0 20px 20px 20px", // Add padding to match the margins
+            }}
+          >
+            <Grid container spacing={2} justifyContent="center">
+              <Grid item xs={2.3}>
+                <TextField
+                  label="Learning rate"
+                  type="number"
+                  fullWidth
+                  onKeyDown={handleNumberInputChange}
+                />
+              </Grid>
+              <Grid item xs={2.3}>
+                <TextField
+                  label="Latent Vector Size"
+                  type="number"
+                  fullWidth
+                  onKeyDown={handleNumberInputChange}
+                />
+              </Grid>
+              <Grid item xs={2.3}>
+                <TextField
+                  label="Regularization Parameter"
+                  type="number"
+                  fullWidth
+                  onKeyDown={handleNumberInputChange}
+                />
+              </Grid>
+              <Grid item xs={2.3}>
+                <TextField
+                  label="#Iteration"
+                  type="number"
+                  fullWidth
+                  onKeyDown={handleNumberInputChange}
+                />
+              </Grid>
+              <Grid item xs={2.3}>
+                <TextField
+                  label="Count Weight"
+                  type="number"
+                  fullWidth
+                  onKeyDown={handleNumberInputChange}
+                />
+              </Grid>
+            </Grid>
+          </Box>
+          {/* POST Button */}
+          <Box
+            sx={{
+              // margin: "20px 20px 20px 20px",
+              display: "flex",
+              justifyContent: "flex-end",
+              width: "98%",
+            }}
+          >
+            <Button
+              onClick={handlePostRequest}
+              // sx={{ fontSize: "12px" }}
+              style={{
+                backgroundColor: colors.blueAccent[900],
+                color: colors.grey[100],
+              }}
+            >
+              Submit
+            </Button>
+          </Box>
+          {/* Train result header */}
+          <Box
+            sx={{
+              margin: "20px 20px 0px 20px",
+              // width: "95%",
+            }}
+          >
+            <AISubHeader title="Training Result" />
+            {/* <Divider /> */}
+          </Box>
+          {/* Charts */}
+          <Box height="300px" width="100%">
+            {/* <Box> */}
+            <TRCLineChart1 />
+            <TRCLineChart2 />
+            <Divider />
+            {/* footer */}
+            <Box display="flex" p={1} alignItems="center">
+              <Button
+                startIcon={
+                  <UpdateIcon
+                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                  />
+                }
+                style={{
+                  color: colors.grey[100],
+                }}
+              >
+                Update Status
+              </Button>
+            </Box>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );

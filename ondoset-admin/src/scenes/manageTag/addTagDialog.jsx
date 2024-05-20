@@ -89,7 +89,7 @@ const AddTagDialog = ({ open, onClose, onAdd }) => {
         <Button onClick={onClose}>Cancel</Button>
         <Button
           onClick={handleAdd}
-          sx={{ fontSize: "12px" }}
+          // sx={{ fontSize: "12px" }}
           style={{
             backgroundColor: colors.blueAccent[900],
             color: colors.grey[100],
