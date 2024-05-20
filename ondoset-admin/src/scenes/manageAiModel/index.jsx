@@ -31,6 +31,7 @@ const ManageAiModel = () => {
   const [mainServerErrorCount, setMainServerErrorCount] = useState(0);
   const [aiModelData, setAiModelData] = useState([]); // 표시되는 AI Model 정보들
   const [aiPerformanceData, setAiPerformanceData] = useState([]); // 표시되는 AI Model Performance 정보들
+  // AI Hyperparameter
   const [learningRate, setLearningRate] = useState("");
   const [latentVectorSize, setLatentVectorSize] = useState("");
   const [regularizationParameter, setRegularizationParameter] = useState("");
@@ -38,6 +39,7 @@ const ManageAiModel = () => {
 
   useEffect(() => {
     handleUpdateAiModelStatus();
+    fetchAiModelList();
   }, []);
 
   const handleUpdateAiModelStatus = async () => {
@@ -46,6 +48,17 @@ const ManageAiModel = () => {
       const { result } = aiResponse.data;
       setAiModelStatus(result);
       console.log("AI 페칭 완료");
+    } catch (error) {
+      console.error("Error updating AiModel status:", error);
+    }
+  };
+
+  const fetchAiModelList = async () => {
+    try {
+      const response = await axios.get("/admin/ai/list");
+      const { result } = response.data;
+      setAiModelData(result.result);
+      console.log(result);
     } catch (error) {
       console.error("Error updating AiModel status:", error);
     }
@@ -78,7 +91,14 @@ const ManageAiModel = () => {
 
   const aiModelColumns = [
     {
-      field: "releasedDate",
+      field: "modelId",
+      headerName: "Model ID",
+      headerAlign: "center",
+      align: "center",
+      flex: 2,
+    },
+    {
+      field: "date",
       headerName: "Released Date",
       headerAlign: "center",
       align: "center",
@@ -87,13 +107,6 @@ const ManageAiModel = () => {
     {
       field: "version",
       headerName: "Version",
-      headerAlign: "center",
-      align: "center",
-      flex: 2,
-    },
-    {
-      field: "dataCount",
-      headerName: "Data Count",
       headerAlign: "center",
       align: "center",
       flex: 2,
