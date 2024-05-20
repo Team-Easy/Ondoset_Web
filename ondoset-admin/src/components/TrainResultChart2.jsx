@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { ResponsiveLine } from "@nivo/line";
 import { tokens } from "../theme";
-import { useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import axios from "axios";
 
-const TRCLineChart2 = () => {
+const TRCLineChart1 = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [chartData, setChartData] = useState([]);
@@ -35,25 +35,17 @@ const TRCLineChart2 = () => {
   //   }, []);
 
   useEffect(() => {
-    // 더미 데이터 생성 함수
-    const generateDummyData = () => {
-      const data = [];
-      for (let i = 0; i < 100; i++) {
-        data.push((Math.random() * 200) / 3); // 0부터 200까지의 무작위 값 생성
-      }
-      return data;
-    };
-
     const fetchData = async () => {
       try {
-        // 더미 데이터 생성
-        const dummyData = generateDummyData();
-        // 더미 데이터를 차트 데이터 형식으로 변환
-        const result = dummyData.map((item, index) => ({
-          x: index, // 0부터 20씩 증가하는 값으로 설정
-          y: item, // y값은 더미 데이터 값 그대로 사용
-        }));
-        setChartData([{ id: "active-users", data: result }]);
+        const response = await axios.get("/admin/ai/train");
+        if (response.data.code === "common_2000") {
+          const rawData = response.data.result.results;
+          const chartData = transformDataToChartFormat(rawData);
+          setChartData(chartData);
+          console.log(chartData);
+        } else {
+          console.error("Failed to fetch data:", response.data.message);
+        }
       } catch (error) {
         console.error("Failed to fetch data:", error);
       }
@@ -61,6 +53,28 @@ const TRCLineChart2 = () => {
 
     fetchData();
   }, []);
+
+  const transformDataToChartFormat = (data) => {
+    const types = [
+      "train_loss",
+      "validation_loss",
+      "validation precision",
+      "validation recall",
+      "validataion f1_score",
+    ];
+
+    const chartData = types.map((type) => ({
+      id: type,
+      data: data
+        .filter((item) => item.type === type)
+        .map((item) => ({
+          x: item.epoch,
+          y: item.value,
+        })),
+    }));
+
+    return chartData;
+  };
 
   return (
     <ResponsiveLine
@@ -120,4 +134,4 @@ const TRCLineChart2 = () => {
   );
 };
 
-export default TRCLineChart2;
+export default TRCLineChart1;

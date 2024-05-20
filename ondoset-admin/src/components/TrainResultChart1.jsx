@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ResponsiveLine } from "@nivo/line";
 import { tokens } from "../theme";
-import { useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import axios from "axios";
 
 const TRCLineChart1 = () => {

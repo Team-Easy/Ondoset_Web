@@ -20,13 +20,14 @@ import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors";
 import UpdateIcon from "@mui/icons-material/Update";
 import EditIcon from "@mui/icons-material/Edit";
 import AISubHeader from "./subHeader";
+import AiStatBox from "./aiStatBox";
 import axios from "axios";
 
 const ManageAiModel = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [mainStatus, setMainStatus] = useState("Unknown"); // 초기 상태값을 Unknown으로 설정
-  const [aiModelStatus, setAiModelStatus] = useState("Unknown"); // 초기 상태값을 Unknown으로 설정
+  const [aiModelStatus, setAiModelStatus] = useState(); // 초기 상태값을 Unknown으로 설정
   const [reportedOOTDCount, setReportedOOTDCount] = useState(0);
   const [mainServerErrorCount, setMainServerErrorCount] = useState(0);
   const [aiModelData, setAiModelData] = useState([]); // 표시되는 AI Model 정보들
@@ -40,14 +41,15 @@ const ManageAiModel = () => {
   useEffect(() => {
     handleUpdateAiModelStatus();
     fetchAiModelList();
+    fetchAiPerfomanceData();
   }, []);
 
   const handleUpdateAiModelStatus = async () => {
     try {
-      const aiResponse = await axios.get("/admin/monitor/ai");
+      const aiResponse = await axios.get("/admin/ai/model-version");
       const { result } = aiResponse.data;
       setAiModelStatus(result);
-      console.log("AI 페칭 완료");
+      console.log(result);
     } catch (error) {
       console.error("Error updating AiModel status:", error);
     }
@@ -58,7 +60,16 @@ const ManageAiModel = () => {
       const response = await axios.get("/admin/ai/list");
       const { result } = response.data;
       setAiModelData(result.result);
-      console.log(result);
+    } catch (error) {
+      console.error("Error updating AiModel status:", error);
+    }
+  };
+
+  const fetchAiPerfomanceData = async () => {
+    try {
+      const response = await axios.get("/admin/ai/cfModel");
+      const { result } = response.data;
+      setAiPerformanceData(result.result);
     } catch (error) {
       console.error("Error updating AiModel status:", error);
     }
@@ -148,7 +159,7 @@ const ManageAiModel = () => {
   const aiPerformanceColumns = [
     {
       field: "modelId",
-      headerName: "modelId",
+      headerName: "Model ID",
       headerAlign: "center",
       align: "center",
       flex: 1,
@@ -162,35 +173,35 @@ const ManageAiModel = () => {
     },
     {
       field: "date",
-      headerName: "date",
+      headerName: "Date",
       headerAlign: "center",
       align: "center",
       flex: 2,
     },
     {
       field: "loss",
-      headerName: "loss",
+      headerName: "Loss",
       headerAlign: "center",
       align: "center",
       flex: 2,
     },
     {
       field: "precision",
-      headerName: "precision",
+      headerName: "Precision",
       headerAlign: "center",
       align: "center",
       flex: 2,
     },
     {
       field: "recall",
-      headerName: "recall",
+      headerName: "Recall",
       headerAlign: "center",
       align: "center",
       flex: 2,
     },
     {
       field: "f1",
-      headerName: "f1",
+      headerName: "F1",
       headerAlign: "center",
       align: "center",
       flex: 2,
@@ -210,7 +221,7 @@ const ManageAiModel = () => {
         {/* AI Model Service Health */}
         <Box
           gridColumn="span 4"
-          gridRow="span 3"
+          gridRow="span 4"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="flex-start"
@@ -221,11 +232,11 @@ const ManageAiModel = () => {
             height: "100%",
           }}
         >
-          <StatBox
-            title={aiModelStatus} // AI 모델의 상태를 title에 반영
+          <AiStatBox
+            title={aiModelStatus !== undefined ? "Normal" : "Unknown"} // AI 모델의 상태를 title에 반영
             subtitle="AI Model Service Health"
             icon={
-              aiModelStatus === "Normal" ? ( // AI 모델 상태에 따라 아이콘 변경
+              aiModelStatus !== undefined ? ( // AI 모델 상태에 따라 아이콘 변경
                 <CheckCircleIcon
                   sx={{ color: colors.blueAccent[600], fontSize: "94px" }}
                 />
@@ -235,13 +246,14 @@ const ManageAiModel = () => {
                 />
               )
             }
+            description={aiModelStatus}
             onUpdateStatus={handleUpdateAiModelStatus}
           />
         </Box>
         {/* AI Selection */}
         <Box
           gridColumn="span 8"
-          gridRow="span 3"
+          gridRow="span 4"
           backgroundColor={colors.primary[400]}
           display="flex"
           flexDirection="column"
@@ -278,7 +290,7 @@ const ManageAiModel = () => {
             <Box
               m="0 0 0 0"
               width="100%"
-              height="57%"
+              height="37vh"
               sx={{
                 "& .MuiDataGrid-root": {
                   border: "none",
@@ -338,7 +350,7 @@ const ManageAiModel = () => {
         {/* AI Performance */}
         <Box
           gridColumn="span 12"
-          gridRow="span 3"
+          gridRow="span 4"
           backgroundColor={colors.primary[400]}
           display="flex"
           flexDirection="column"
@@ -350,7 +362,6 @@ const ManageAiModel = () => {
             height: "100%",
           }}
         >
-          {/* Blacklist */}
           <Box
             flexGrow={1}
             width="100%"
@@ -376,7 +387,7 @@ const ManageAiModel = () => {
             <Box
               m="0 0 0 0"
               width="100%"
-              height="57%"
+              height="37vh"
               sx={{
                 "& .MuiDataGrid-root": {
                   border: "none",
@@ -464,15 +475,20 @@ const ManageAiModel = () => {
               margin: "20px 20px 20px 20px",
             }}
           >
-            <AIHeader title="AI Model Training" />
+            <AIHeader
+              title="AI Model Training"
+              subtitle="Input hyper-parameters and displays the training results in charts"
+            />
           </Box>
           {/* sub header */}
           <Box
             sx={{
               margin: "20px 20px 20px 20px",
+              width: "95%",
             }}
           >
             <AISubHeader title="Collaborative Filtering" />
+            <Divider sx={{ paddingTop: "10px" }} />
           </Box>
           {/* TextFields */}
           <Box
@@ -548,33 +564,56 @@ const ManageAiModel = () => {
           <Box
             sx={{
               margin: "20px 20px 0px 20px",
-              // width: "95%",
+              width: "95%",
             }}
           >
             <AISubHeader title="Training Result" />
-            {/* <Divider /> */}
+            <Divider sx={{ paddingTop: "10px" }} />
           </Box>
           {/* Charts */}
-          <Box height="300px" width="100%">
+          <Box
+            height="300px"
+            width="100%"
+            display="flex"
+            justifyContent="space-between" // 차트들 사이에 공간을 균등하게 분배
+            alignItems="center" // 차트를 수직으로 가운데 정렬
+            // flexWrap="wrap" // 창 크기에 따라 차트가 자동으로 다음 줄로 이동
+            gap="20px" // 차트들 사이에 여유 공간 추가
+          >
             {/* <Box> */}
-            <TRCLineChart1 />
-            <TRCLineChart2 />
+            <Box>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ color: colors.grey[100], paddingLeft: "20px" }}
+              >
+                Training
+              </Typography>
+            </Box>
+
+            <Box height="300px" width="100%">
+              <TRCLineChart1 />
+              <TRCLineChart1 />
+            </Box>
+            <Box>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ color: colors.grey[100] }}
+              >
+                Validation
+              </Typography>
+              <TRCLineChart1 />
+            </Box>
+
+            <Box height="300px" width="100%">
+              <TRCLineChart2 />
+              <TRCLineChart2 />
+            </Box>
+
             <Divider />
             {/* footer */}
-            <Box display="flex" p={1} alignItems="center">
-              <Button
-                startIcon={
-                  <UpdateIcon
-                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-                  />
-                }
-                style={{
-                  color: colors.grey[100],
-                }}
-              >
-                Update Status
-              </Button>
-            </Box>
+            <Box display="flex" p={1} alignItems="center"></Box>
           </Box>
         </Box>
       </Box>
