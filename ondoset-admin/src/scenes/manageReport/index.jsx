@@ -234,7 +234,7 @@ const ManageReport = () => {
         {/* dataGrid */}
         <Box
           m="0 0 0 0"
-          height="65vh"
+          height="55vh"
           sx={{
             "& .MuiDataGrid-root": {
               border: "none",

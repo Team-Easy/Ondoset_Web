@@ -34,7 +34,10 @@ const OOTDCard = ({ memberId }) => {
             <CardMedia
               component="img"
               height="140"
-              image={process.env.REACT_APP_IMAGE_BASE_URL + ootd.imageURL}
+              image={
+                process.env.REACT_APP_IMAGE_BASE_URL + ootd.imageURL
+                // "/2.png"
+              }
               alt="OOTD Image"
             />
             <CardContent>

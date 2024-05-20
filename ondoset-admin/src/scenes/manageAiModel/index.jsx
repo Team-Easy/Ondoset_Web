@@ -34,24 +34,6 @@ const ManageAiModel = () => {
   useEffect(() => {
     fetchMainStatus();
     handleUpdateAiModelStatus();
-    setAiModelData([
-      {
-        releasedDate: "2024-05-12T17:23:59",
-        version: 1.0,
-        dataCount: 1339,
-      },
-    ]);
-    setAiPerformanceData([
-      {
-        modelId: 1,
-        version: 1.0,
-        date: "2024-05-16T06:49:32",
-        loss: 182.91101623724484,
-        precision: 0.23188405797101447,
-        recall: 0.13083160800552104,
-        f1: 0.16194867933998366,
-      },
-    ]);
   }, []);
 
   const fetchMainStatus = async () => {
@@ -421,7 +403,7 @@ const ManageAiModel = () => {
         </Box>
         {/* ROW 3 */}
         {/* AI Train */}
-        <Box
+        {/* <Box
           gridColumn="span 12"
           gridRow="span 6"
           backgroundColor={colors.primary[400]}
@@ -433,7 +415,7 @@ const ManageAiModel = () => {
             borderRadius: "5px",
             height: "100%",
           }}
-        ></Box>
+        ></Box> */}
       </Box>
     </Box>
   );
