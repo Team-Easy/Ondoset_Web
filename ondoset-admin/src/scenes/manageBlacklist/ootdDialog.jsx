@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 
 const OOTDCard = ({ memberId }) => {
   const [ootdList, setOotdList] = useState([]);
@@ -15,25 +15,28 @@ const OOTDCard = ({ memberId }) => {
       const response = await axios.get(
         `/admin/blacklist/reporter-list?memberId=${memberId}&lastPage=-1`
       );
-      console.log(response);
-      setOotdList([
-        response.data.result.ootdList[0],
-        response.data.result.ootdList[0],
-        response.data.result.ootdList[0],
-      ]);
+      console.log(response.data.result);
+      if (response.data.result.ootdList === undefined) {
+        setOotdList([]);
+      } else {
+        setOotdList(response.data.result.ootdList);
+        console.log(response.data.result.ootdList[0]);
+      }
     } catch (error) {
       console.error("Error fetching OOTD list:", error);
     }
   };
 
   return (
-    <>
+    <Box sx={{ display: "flex", overflowX: "auto", padding: 2 }}>
       {ootdList.length > 0 ? (
         ootdList.map((ootd) => (
-          <Card key={ootd.ootdId} sx={{ maxWidth: 345 }}>
+          // <Typography>{ootd.imageURL}</Typography>
+          <Card key={ootd.ootdId} sx={{ minWidth: 300, marginRight: 2 }}>
             <CardMedia
               component="img"
-              height="140"
+              // height="100%"
+              // width="100%"
               image={
                 process.env.REACT_APP_IMAGE_BASE_URL + ootd.imageURL
                 // "/2.png"
@@ -49,8 +52,15 @@ const OOTDCard = ({ memberId }) => {
                   month: "long",
                   day: "numeric",
                 })}{" "}
-                | Lowest Temp: {ootd.lowestTemp}°C
+                |
               </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Highest Temp: {ootd.highestTemp}°C
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Lowest Temp: {ootd.lowestTemp}°C
+              </Typography>
+
               <Typography variant="body2" color="text.secondary">
                 Wearing:
                 <ul>
@@ -68,7 +78,7 @@ const OOTDCard = ({ memberId }) => {
       ) : (
         <Typography>No OOTD found</Typography>
       )}
-    </>
+    </Box>
   );
 };
 

@@ -44,6 +44,8 @@ const ManageAiModel = () => {
   // view
   const [openTest, setOpenTest] = useState(false); // Test 화면 상자 열림 여부 상태
   const [openApply, setOpenApply] = useState(false); // Apply 화면 상자 열림 여부 상태
+  // State to trigger refetch in TRCChart components
+  const [refetchTrigger, setRefetchTrigger] = useState(false);
 
   useEffect(() => {
     handleUpdateAiModelStatus();
@@ -91,13 +93,18 @@ const ManageAiModel = () => {
     // }
   };
 
+  const refreshTrainData = () => {
+    // Trigger refetch in TRCChart components
+    setRefetchTrigger((prev) => !prev);
+  };
+
   const handleTrainPostRequest = async () => {
     const data = {
-      CFLr: learningRate,
-      LVC: latentVectorSize,
-      CFReg: regularizationParameter,
-      CFIter: iteration,
-      CFW: countWeight,
+      cfLr: learningRate,
+      lvc: latentVectorSize,
+      cfReg: regularizationParameter,
+      cfIter: iteration,
+      cfW: countWeight,
     };
 
     console.log(data);
@@ -105,6 +112,7 @@ const ManageAiModel = () => {
     try {
       const response = await axios.post("/admin/ai/train", data);
       console.log("POST 요청 성공:", response.data);
+      refreshTrainData();
     } catch (error) {
       console.error("POST 요청 실패:", error);
     }
@@ -128,10 +136,11 @@ const ManageAiModel = () => {
       .post(`/admin/ai/test`, requestData)
       .then((response) => {
         console.log(response.data);
-        // 삭제 성공 시
+
         if (response.data.code === "common_2000") {
           console.log("test 요청 완료");
           fetchAiModelList();
+          refreshTrainData();
         }
       })
       .catch((error) => {
@@ -163,10 +172,10 @@ const ManageAiModel = () => {
       .post(`/admin/ai/select`, requestData)
       .then((response) => {
         console.log(response.data);
-        // 삭제 성공 시
         if (response.data.code === "common_2000") {
           console.log("select 요청 완료");
           fetchAiModelList();
+          refreshTrainData();
         }
       })
       .catch((error) => {
@@ -716,7 +725,7 @@ const ManageAiModel = () => {
             </Box>
 
             <Box height="300px" width="100%">
-              <TRCLineChart1 />
+              <TRCLineChart1 refetchTrigger={refetchTrigger} />
               {/* <TRCLineChart1 /> */}
             </Box>
             <Box>
@@ -730,8 +739,8 @@ const ManageAiModel = () => {
             </Box>
 
             <Box height="300px" width="100%">
-              <TRCLineChart2 option="true" />
-              <TRCLineChart2 />
+              <TRCLineChart2 option="true" refetchTrigger={refetchTrigger} />
+              <TRCLineChart2 refetchTrigger={refetchTrigger} />
             </Box>
 
             <Divider />

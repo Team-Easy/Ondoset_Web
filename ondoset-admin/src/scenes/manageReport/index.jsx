@@ -15,10 +15,12 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockReportedOOTDData } from "../../data/mockData";
+import ReportOOTDCard from "./ootdDialog";
 import Header from "../../components/Header";
 import UpdateIcon from "@mui/icons-material/Update";
 import GppGoodIcon from "@mui/icons-material/GppGood";
 import GppBadIcon from "@mui/icons-material/GppBad";
+import PreviewIcon from "@mui/icons-material/Preview";
 import axios from "axios";
 
 const ManageReport = () => {
@@ -28,6 +30,7 @@ const ManageReport = () => {
   const [selectedRow, setSelectedRow] = useState(null); // 선택된 행 정보를 저장하는 상태 변수
   const [ootdData, setOOTDData] = useState([]); // 표시되는 OOTD 정보들
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false); // 삭제 화면 상자 열림 여부 상태
+  const [openSeeOOTDs, setOpenSeeOOTDs] = useState(false); // OOTD 게시물 화면 상자 열림 여부 상태
 
   useEffect(() => {
     fetchOOTDData();
@@ -38,18 +41,18 @@ const ManageReport = () => {
       .get("/admin/report")
       .then((response) => {
         const data = response.data.result;
-        const ootds = [];
-        // console.log(data);
-        data.forEach((item) => {
-          ootds.push({
-            ootdId: item.ootdId,
-            reportedCount: item.reportedCount,
-            imageURL: "http://ceprj.gachon.ac.kr:60019/images" + item.imageURL,
-            reason: item.reason,
-          });
-        });
-        console.log(ootds);
-        setOOTDData(ootds);
+        // const ootds = [];
+        // // console.log(data);
+        // data.forEach((item) => {
+        //   ootds.push({
+        //     ootdId: item.ootdId,
+        //     reportedCount: item.reportedCount,
+        //     imageURL: item.imageURL,
+        //     reason: item.reason,
+        //   });
+        // });
+        // console.log(ootds);
+        setOOTDData(data);
       })
       .catch((error) => {
         console.error("Error fetching tag data:", error);
@@ -65,6 +68,16 @@ const ManageReport = () => {
     handleRowSelection(row);
     // 업데이트 버튼 클릭 시 업데이트 대화 상자 열기
     setOpenUpdateDialog(true);
+  };
+
+  const handleOpenOOTD = (row) => {
+    handleRowSelection(row);
+    setOpenSeeOOTDs(true);
+  };
+
+  const handleOOTDDialogClose = () => {
+    // 업데이트 대화 상자 닫기
+    setOpenSeeOOTDs(false);
   };
 
   // 업데이트 작업 수행
@@ -155,14 +168,19 @@ const ManageReport = () => {
     },
     {
       field: "imageURL",
-      headerName: "Image URL",
+      headerName: "See Image",
       headerAlign: "center",
       align: "center",
       flex: 1.5,
       renderCell: (params) => (
-        <a href={params.value} target="_blank" rel="noopener noreferrer">
-          See Image
-        </a>
+        <>
+          <IconButton
+            aria-label="bad"
+            onClick={() => handleOpenOOTD(params.row)}
+          >
+            <PreviewIcon />
+          </IconButton>
+        </>
       ),
     },
     {
@@ -352,6 +370,24 @@ const ManageReport = () => {
           >
             Confirm
           </Button>
+        </DialogActions>
+      </Dialog>
+      {/* OOTD 보여주기 화면 다이얼로그 */}
+      <Dialog
+        open={openSeeOOTDs}
+        onClose={() => setOpenSeeOOTDs(false)}
+        fullWidth
+      >
+        <DialogTitle>
+          <Typography variant="h6" color={colors.grey[100]}>
+            Image
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          {selectedRow && <ReportOOTDCard imageURL={selectedRow.imageURL} />}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenSeeOOTDs(false)}>Close</Button>
         </DialogActions>
       </Dialog>
     </Box>

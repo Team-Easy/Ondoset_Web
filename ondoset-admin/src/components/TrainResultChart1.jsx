@@ -4,7 +4,7 @@ import { tokens } from "../theme";
 import { Box, Typography, useTheme } from "@mui/material";
 import axios from "axios";
 
-const TRCLineChart1 = () => {
+const TRCLineChart1 = ({ refetchTrigger }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [chartData, setChartData] = useState([]);
@@ -51,7 +51,7 @@ const TRCLineChart1 = () => {
     };
 
     fetchData();
-  }, []);
+  }, [refetchTrigger]);
 
   const transformDataToChartFormat = (data) => {
     // let types = []
