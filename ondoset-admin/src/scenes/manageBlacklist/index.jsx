@@ -310,6 +310,7 @@ const ManageBlacklist = () => {
             style={{
               color: colors.grey[100],
             }}
+            onClick={fetchBlacklistData}
           >
             Update Status
           </Button>
@@ -386,6 +387,7 @@ const ManageBlacklist = () => {
             style={{
               color: colors.grey[100],
             }}
+            onClick={fetchOffenderListData}
           >
             Update Status
           </Button>
@@ -461,6 +463,7 @@ const ManageBlacklist = () => {
             style={{
               color: colors.grey[100],
             }}
+            onClick={fetchReporterListData}
           >
             Update Status
           </Button>

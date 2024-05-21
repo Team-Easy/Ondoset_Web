@@ -272,6 +272,7 @@ const ManageTag = () => {
             style={{
               color: colors.grey[100],
             }}
+            onClick={fetchTagData}
           >
             Update Status
           </Button>

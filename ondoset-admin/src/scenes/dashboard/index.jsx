@@ -17,6 +17,8 @@ const Dashboard = () => {
   const [mainStatus, setMainStatus] = useState("Unknown"); // 초기 상태값을 Unknown으로 설정
   const [reportedOOTDCount, setReportedOOTDCount] = useState(0);
   const [mainServerErrorCount, setMainServerErrorCount] = useState(0);
+  const [refetchLineChart, setRefetchLineChart] = useState(false);
+  const [refetchPieChart, setRefetchPieChart] = useState(false);
 
   useEffect(() => {
     fetchMainStatus();
@@ -55,6 +57,14 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error updating mainServer status:", error);
     }
+  };
+
+  const handleUpdateLineChart = () => {
+    setRefetchLineChart((prev) => !prev);
+  };
+
+  const handleUpdatePieChart = () => {
+    setRefetchPieChart((prev) => !prev);
   };
 
   return (
@@ -182,7 +192,7 @@ const Dashboard = () => {
             </Box>
           </Box>
           <Box height="70%" width="100%">
-            <MAULineChart />
+            <MAULineChart refresh={refetchLineChart} />
             {/* <LineChart /> */}
           </Box>
           <Box m={"15px"}>
@@ -198,6 +208,7 @@ const Dashboard = () => {
                 style={{
                   color: colors.grey[100],
                 }}
+                onClick={handleUpdateLineChart}
               >
                 Update Status
               </Button>
@@ -236,7 +247,7 @@ const Dashboard = () => {
             </Box>
           </Box>
           <Box height="70%">
-            <PieChart />
+            <PieChart refresh={refetchPieChart} />
           </Box>
           <Box m={"15px"}>
             <Divider />
@@ -251,6 +262,7 @@ const Dashboard = () => {
                 style={{
                   color: colors.grey[100],
                 }}
+                onClick={handleUpdatePieChart}
               >
                 Update Status
               </Button>

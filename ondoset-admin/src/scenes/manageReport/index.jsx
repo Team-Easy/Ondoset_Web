@@ -299,6 +299,7 @@ const ManageReport = () => {
             style={{
               color: colors.grey[100],
             }}
+            onClick={fetchOOTDData}
           >
             Update Status
           </Button>

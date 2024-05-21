@@ -4,7 +4,7 @@ import { tokens } from "../theme";
 import { useTheme } from "@mui/material";
 import axios from "axios";
 
-const MAULineChart = () => {
+const MAULineChart = ({ refresh }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [chartData, setChartData] = useState([]);
@@ -32,7 +32,7 @@ const MAULineChart = () => {
     };
 
     fetchData();
-  }, []);
+  }, [refresh]);
 
   return (
     <ResponsiveLine

@@ -4,7 +4,7 @@ import { tokens } from "../theme";
 import { useTheme } from "@mui/material";
 import axios from "axios";
 
-const PieChart = () => {
+const PieChart = ({ refresh }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [chartData, setChartData] = useState([]);
@@ -50,7 +50,7 @@ const PieChart = () => {
     };
 
     fetchData();
-  }, []);
+  }, [refresh]);
 
   return (
     <ResponsivePie
