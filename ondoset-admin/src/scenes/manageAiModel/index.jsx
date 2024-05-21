@@ -24,6 +24,8 @@ import AIHeader from "./header";
 import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors";
 import UpdateIcon from "@mui/icons-material/Update";
 import EditIcon from "@mui/icons-material/Edit";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
 import AISubHeader from "./subHeader";
 import AiStatBox from "./aiStatBox";
 import axios from "axios";
@@ -249,7 +251,7 @@ const ManageAiModel = () => {
               handleTestDialogOpen(params.row);
             }}
           >
-            <EditIcon />
+            <AirplaneTicketIcon />
           </IconButton>
         </>
       ),
@@ -269,7 +271,7 @@ const ManageAiModel = () => {
               handleApplyDialogOpen(params.row);
             }}
           >
-            <EditIcon />
+            <CheckBoxIcon />
           </IconButton>
         </>
       ),
