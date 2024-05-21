@@ -4,35 +4,10 @@ import { tokens } from "../theme";
 import { Box, Typography, useTheme } from "@mui/material";
 import axios from "axios";
 
-const TRCLineChart1 = () => {
+const TRCLineChart1 = ({ option }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [chartData, setChartData] = useState([]);
-
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         const response = await axios.get("/admin/monitor/active-user");
-  //         if (response.data.code === "common_2000") {
-  //           // 데이터가 성공적으로 받아와졌을 때 처리
-  //           console.log(response.data.result);
-  //           const result = response.data.result.map((item, index) => ({
-  //             x: index * 20, // 0부터 20씩 증가하는 값으로 설정
-  //             y: item, // y값은 받아온 값 그대로 사용
-  //           }));
-  //           setChartData([{ id: "active-users", data: result }]);
-  //         } else {
-  //           // 요청 실패시 에러 처리
-  //           console.error("Failed to fetch data:", response.data.message);
-  //         }
-  //       } catch (error) {
-  //         // 네트워크 오류 등으로 인한 요청 실패시 에러 처리
-  //         console.error("Failed to fetch data:", error);
-  //       }
-  //     };
-
-  //     fetchData();
-  //   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,16 +27,19 @@ const TRCLineChart1 = () => {
     };
 
     fetchData();
-  }, []);
+  }, [option]); // add option to the dependency array
 
   const transformDataToChartFormat = (data) => {
-    const types = [
-      "train_loss",
-      "validation_loss",
-      "validation precision",
-      "validation recall",
-      "validataion f1_score",
-    ];
+    let types = [];
+    if (option === "true") {
+      types = ["validation_loss"];
+    } else {
+      types = [
+        "validation precision",
+        "validation recall",
+        "validataion f1_score",
+      ];
+    }
 
     const chartData = types.map((type) => ({
       id: type,
@@ -106,11 +84,18 @@ const TRCLineChart1 = () => {
             fill: colors.grey[100],
           },
         },
+        tooltip: {
+          container: {
+            background: colors.grey[900],
+            color: colors.grey[100],
+            fontSize: "13px",
+          },
+        },
       }}
       axisBottom={{
-        legend: "time scale",
+        legend: "epoch",
         legendOffset: -12,
-        tickValues: [0, 20, 40, 60], // 0부터 20씩 증가하는 값 설정
+        tickValues: [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200],
       }}
       axisLeft={{
         legend: "linear scale",
@@ -130,6 +115,33 @@ const TRCLineChart1 = () => {
       pointSize={16}
       pointSymbol={function noRefCheck() {}}
       useMesh
+      legends={[
+        {
+          anchor: "bottom-right",
+          direction: "column",
+          justify: false,
+          translateX: -80,
+          translateY: -20,
+          itemsSpacing: 0,
+          itemDirection: "left-to-right",
+          itemWidth: 130,
+          itemHeight: 20,
+          // itemOpacity: 0.75,
+          symbolSize: 12,
+          symbolShape: "circle",
+          symbolBorderColor: "rgba(0, 0, 0, .5)",
+          itemBackground: colors.grey[900],
+          effects: [
+            {
+              on: "hover",
+              style: {
+                itemBackground: "rgba(0, 0, 0, .03)",
+                itemOpacity: 1,
+              },
+            },
+          ],
+        },
+      ]}
     />
   );
 };

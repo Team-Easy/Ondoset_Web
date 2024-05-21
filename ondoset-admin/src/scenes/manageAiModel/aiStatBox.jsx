@@ -66,11 +66,11 @@ const AiStatBox = ({ title, subtitle, icon, description, onUpdateStatus }) => {
         </Typography>
       </Box>
 
-      <Box>
+      <Box paddingTop={1}>
         <Typography
           //   textAlign="right"
           variant="h6"
-          sx={{ color: colors.grey[700], whiteSpace: "pre-line" }}
+          sx={{ color: colors.grey[400], whiteSpace: "pre-line" }}
         >
           {content}
         </Typography>

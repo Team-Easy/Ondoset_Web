@@ -262,7 +262,7 @@ const ManageAiModel = () => {
           sx={{
             boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
             borderRadius: "5px",
-            height: "100%",
+            // height: "100%",
           }}
         >
           <Box
@@ -290,7 +290,7 @@ const ManageAiModel = () => {
             <Box
               m="0 0 0 0"
               width="100%"
-              height="37vh"
+              height="320px"
               sx={{
                 "& .MuiDataGrid-root": {
                   border: "none",
@@ -327,7 +327,7 @@ const ManageAiModel = () => {
                 disableColumnFilter
               />
             </Box>
-            {/* <Box flex={1} p={0} /> */}
+
             <Divider />
             {/* footer */}
             <Box display="flex" p={1} alignItems="center">
@@ -365,6 +365,7 @@ const ManageAiModel = () => {
           <Box
             flexGrow={1}
             width="100%"
+
             // m="20px"
             // sx={{
             //   paddingTop: "1px",
@@ -387,7 +388,7 @@ const ManageAiModel = () => {
             <Box
               m="0 0 0 0"
               width="100%"
-              height="37vh"
+              height="320px"
               sx={{
                 "& .MuiDataGrid-root": {
                   border: "none",
@@ -593,7 +594,7 @@ const ManageAiModel = () => {
 
             <Box height="300px" width="100%">
               <TRCLineChart1 />
-              <TRCLineChart1 />
+              {/* <TRCLineChart1 /> */}
             </Box>
             <Box>
               <Typography
@@ -603,11 +604,10 @@ const ManageAiModel = () => {
               >
                 Validation
               </Typography>
-              <TRCLineChart1 />
             </Box>
 
             <Box height="300px" width="100%">
-              <TRCLineChart2 />
+              <TRCLineChart2 option="true" />
               <TRCLineChart2 />
             </Box>
 

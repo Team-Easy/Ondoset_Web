@@ -54,13 +54,18 @@ const TRCLineChart1 = () => {
   }, []);
 
   const transformDataToChartFormat = (data) => {
-    const types = [
-      "train_loss",
-      "validation_loss",
-      "validation precision",
-      "validation recall",
-      "validataion f1_score",
-    ];
+    // let types = []
+    // if (option === true) {
+    //   types = [ "train_loss"];
+    // } else {
+    //   types = [
+    //     "validation_loss",
+    //     "validation precision",
+    //     "validation recall",
+    //     "validataion f1_score",
+    //   ];
+    // }
+    const types = ["train_loss"];
 
     const chartData = types.map((type) => ({
       id: type,
@@ -105,11 +110,18 @@ const TRCLineChart1 = () => {
             fill: colors.grey[100],
           },
         },
+        tooltip: {
+          container: {
+            background: colors.grey[900],
+            color: colors.grey[100],
+            fontSize: "13px",
+          },
+        },
       }}
       axisBottom={{
-        legend: "time scale",
+        legend: "epoch",
         legendOffset: -12,
-        tickValues: [0, 20, 40, 60], // 0부터 20씩 증가하는 값 설정
+        tickValues: [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200],
       }}
       axisLeft={{
         legend: "linear scale",
@@ -129,6 +141,33 @@ const TRCLineChart1 = () => {
       pointSize={16}
       pointSymbol={function noRefCheck() {}}
       useMesh
+      legends={[
+        {
+          anchor: "bottom-right",
+          direction: "column",
+          justify: false,
+          translateX: -80,
+          translateY: -20,
+          itemsSpacing: 0,
+          itemDirection: "left-to-right",
+          itemWidth: 80,
+          itemHeight: 20,
+          // itemOpacity: 0.75,
+          symbolSize: 12,
+          symbolShape: "circle",
+          symbolBorderColor: "rgba(0, 0, 0, .5)",
+          itemBackground: colors.grey[900],
+          effects: [
+            {
+              on: "hover",
+              style: {
+                itemBackground: "rgba(0, 0, 0, .03)",
+                itemOpacity: 1,
+              },
+            },
+          ],
+        },
+      ]}
     />
   );
 };
