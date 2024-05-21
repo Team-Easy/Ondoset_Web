@@ -37,6 +37,7 @@ const ManageBlacklist = () => {
   const [blockTime, setBlockTime] = useState(null); // 정지 기간 정보를 저장하는 상태 변수
   const [openChangeBlockTime, setOpenChangeBlockTime] = useState(false); // 정지 기간 화면 상자 열림 여부 상태
   const [openSeeOOTDs, setOpenSeeOOTDs] = useState(false); // OOTD 게시물 화면 상자 열림 여부 상태
+  const [isOffender, setIsOffender] = useState(false);
 
   useEffect(() => {
     fetchBlacklistData();
@@ -128,9 +129,10 @@ const ManageBlacklist = () => {
   };
 
   // OOTD 화면에 보여주기 위해 선택
-  const handleSeeOOTD = (id) => {
+  const handleSeeOOTD = (id, isOffender) => {
     console.log(id);
     setSelectedRow(id);
+    setIsOffender(isOffender);
     setOpenSeeOOTDs(true);
   };
 
@@ -179,7 +181,7 @@ const ManageBlacklist = () => {
     },
   ];
 
-  const reportListColumns = [
+  const offenderListColumns = [
     {
       field: "memberId",
       headerName: "Member ID",
@@ -214,7 +216,66 @@ const ManageBlacklist = () => {
         <>
           <IconButton
             aria-label="Preview"
-            onClick={() => handleSeeOOTD(params.row)}
+            onClick={() => handleSeeOOTD(params.row, true)}
+          >
+            <PreviewIcon />
+          </IconButton>
+        </>
+      ),
+    },
+    {
+      field: "actions_update",
+      headerName: "Update",
+      sortable: false,
+      renderCell: (params) => (
+        <>
+          <IconButton
+            aria-label="Edit"
+            onClick={() => handleChangeBlockTime(params.row)}
+          >
+            <EditIcon />
+          </IconButton>
+        </>
+      ),
+    },
+  ];
+
+  const reporterListColumns = [
+    {
+      field: "memberId",
+      headerName: "Member ID",
+      headerAlign: "center",
+      align: "center",
+      flex: 1.5,
+    },
+    {
+      cellClassName: "name-column--cell",
+      field: "nickname",
+      headerName: "Nickname",
+      headerAlign: "center",
+      align: "center",
+      flex: 2,
+    },
+    {
+      field: "reportedCount",
+      headerName: "Reported Count",
+      headerAlign: "center",
+      align: "center",
+      flex: 2,
+    },
+    { field: "spacer", headerName: "", flex: 12 },
+    {
+      field: "actions_show_content",
+      headerName: "Check Content",
+      sortable: false,
+      headerAlign: "center",
+      align: "center",
+      flex: 2,
+      renderCell: (params) => (
+        <>
+          <IconButton
+            aria-label="Preview"
+            onClick={() => handleSeeOOTD(params.row, false)}
           >
             <PreviewIcon />
           </IconButton>
@@ -369,7 +430,7 @@ const ManageBlacklist = () => {
         >
           <DataGrid
             rows={offenderListData}
-            columns={reportListColumns}
+            columns={offenderListColumns}
             getRowId={(row) => row.memberId}
             disableColumnFilter
           />
@@ -445,7 +506,7 @@ const ManageBlacklist = () => {
         >
           <DataGrid
             rows={reporterListData}
-            columns={reportListColumns}
+            columns={reporterListColumns}
             getRowId={(row) => row.memberId}
             disableColumnFilter
           />
@@ -481,7 +542,9 @@ const ManageBlacklist = () => {
           </Typography>
         </DialogTitle>
         <DialogContent>
-          {selectedRow && <OOTDCard memberId={selectedRow.memberId} />}
+          {selectedRow && (
+            <OOTDCard memberId={selectedRow.memberId} isOffender={isOffender} />
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenSeeOOTDs(false)}>Close</Button>

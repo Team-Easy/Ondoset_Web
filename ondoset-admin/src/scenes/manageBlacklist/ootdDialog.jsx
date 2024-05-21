@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 
-const OOTDCard = ({ memberId }) => {
+const OOTDCard = ({ memberId, isOffender }) => {
   const [ootdList, setOotdList] = useState([]);
 
   useEffect(() => {
@@ -12,9 +12,17 @@ const OOTDCard = ({ memberId }) => {
   const fetchOOTDList = async () => {
     try {
       //   console.log(memberId.memberId);
-      const response = await axios.get(
-        `/admin/blacklist/reporter-list?memberId=${memberId}&lastPage=-1`
-      );
+      let response;
+      if (isOffender === true) {
+        response = await axios.get(
+          `/admin/blacklist/reported-list?memberId=${memberId}&lastPage=-1`
+        );
+      } else {
+        response = await axios.get(
+          `/admin/blacklist/reporter-list?memberId=${memberId}&lastPage=-1`
+        );
+      }
+
       console.log(response.data.result);
       if (response.data.result.ootdList === undefined) {
         setOotdList([]);
@@ -52,7 +60,6 @@ const OOTDCard = ({ memberId }) => {
                   month: "long",
                   day: "numeric",
                 })}{" "}
-                |
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Highest Temp: {ootd.highestTemp}°C
