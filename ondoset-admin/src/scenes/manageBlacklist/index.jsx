@@ -263,7 +263,7 @@ const ManageBlacklist = () => {
         {/* dataGrid */}
         <Box
           m="0 0 0 0"
-          height="65vh"
+          height="45vh"
           sx={{
             "& .MuiDataGrid-root": {
               border: "none",
@@ -339,7 +339,7 @@ const ManageBlacklist = () => {
         {/* dataGrid */}
         <Box
           m="0 0 0 0"
-          height="65vh"
+          height="45vh"
           sx={{
             "& .MuiDataGrid-root": {
               border: "none",
@@ -414,7 +414,7 @@ const ManageBlacklist = () => {
         {/* dataGrid */}
         <Box
           m="0 0 0 0"
-          height="65vh"
+          height="45vh"
           sx={{
             "& .MuiDataGrid-root": {
               border: "none",

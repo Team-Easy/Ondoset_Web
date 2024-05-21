@@ -4,80 +4,112 @@ import {
   Button,
   Divider,
   Typography,
+  TextField,
+  Grid,
   useTheme,
   IconButton,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import MAULineChart from "../../components/TimeLineChart";
-import PieChart from "../../components/PieChart";
 import StatBox from "../../components/StatBox";
-
+import TRCLineChart1 from "../../components/TrainResultChart1";
+import TRCLineChart2 from "../../components/TrainResultChart2";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import AssignmentIcon from "@mui/icons-material/Assignment";
 import AIHeader from "./header";
 import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors";
 import UpdateIcon from "@mui/icons-material/Update";
 import EditIcon from "@mui/icons-material/Edit";
+import AISubHeader from "./subHeader";
+import AiStatBox from "./aiStatBox";
 import axios from "axios";
 
 const ManageAiModel = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [mainStatus, setMainStatus] = useState("Unknown"); // 초기 상태값을 Unknown으로 설정
-  const [aiModelStatus, setAiModelStatus] = useState("Unknown"); // 초기 상태값을 Unknown으로 설정
+  const [aiModelStatus, setAiModelStatus] = useState(); // 초기 상태값을 Unknown으로 설정
   const [reportedOOTDCount, setReportedOOTDCount] = useState(0);
   const [mainServerErrorCount, setMainServerErrorCount] = useState(0);
   const [aiModelData, setAiModelData] = useState([]); // 표시되는 AI Model 정보들
   const [aiPerformanceData, setAiPerformanceData] = useState([]); // 표시되는 AI Model Performance 정보들
+  // AI Hyperparameter
+  const [learningRate, setLearningRate] = useState("");
+  const [latentVectorSize, setLatentVectorSize] = useState("");
+  const [regularizationParameter, setRegularizationParameter] = useState("");
+  const [iteration, setIteration] = useState("");
 
   useEffect(() => {
-    fetchMainStatus();
     handleUpdateAiModelStatus();
-    setAiModelData([
-      {
-        releasedDate: "2024-05-12T17:23:59",
-        version: 1.0,
-        dataCount: 1339,
-      },
-    ]);
-    setAiPerformanceData([
-      {
-        modelId: 1,
-        version: 1.0,
-        date: "2024-05-16T06:49:32",
-        loss: 182.91101623724484,
-        precision: 0.23188405797101447,
-        recall: 0.13083160800552104,
-        f1: 0.16194867933998366,
-      },
-    ]);
+    fetchAiModelList();
+    fetchAiPerfomanceData();
   }, []);
-
-  const fetchMainStatus = async () => {
-    try {
-      const response = await axios.get("/admin/monitor/db");
-      const { result: result } = response.data;
-      setMainStatus(result);
-    } catch (error) {
-      console.error("Error updating database status:", error);
-    }
-  };
 
   const handleUpdateAiModelStatus = async () => {
     try {
-      const aiResponse = await axios.get("/admin/monitor/ai");
+      const aiResponse = await axios.get("/admin/ai/model-version");
       const { result } = aiResponse.data;
       setAiModelStatus(result);
-      console.log("AI 페칭 완료");
+      console.log(result);
     } catch (error) {
       console.error("Error updating AiModel status:", error);
     }
   };
 
+  const fetchAiModelList = async () => {
+    try {
+      const response = await axios.get("/admin/ai/list");
+      const { result } = response.data;
+      setAiModelData(result.result);
+    } catch (error) {
+      console.error("Error updating AiModel status:", error);
+    }
+  };
+
+  const fetchAiPerfomanceData = async () => {
+    try {
+      const response = await axios.get("/admin/ai/cfModel");
+      const { result } = response.data;
+      setAiPerformanceData(result.result);
+    } catch (error) {
+      console.error("Error updating AiModel status:", error);
+    }
+  };
+
+  const handleNumberInputChange = (event) => {
+    const { value } = event.target;
+    if (/^\d*\.?\d*$/.test(value)) {
+      event.target.value = value;
+    } else {
+      event.preventDefault();
+    }
+  };
+
+  const handlePostRequest = async () => {
+    const data = {
+      learningRate,
+      latentVectorSize,
+      regularizationParameter,
+      iteration,
+    };
+
+    try {
+      const response = await axios.post("/admin/ai/train", data);
+      console.log("POST 요청 성공:", response.data);
+    } catch (error) {
+      console.error("POST 요청 실패:", error);
+    }
+  };
+
   const aiModelColumns = [
     {
-      field: "releasedDate",
+      field: "modelId",
+      headerName: "Model ID",
+      headerAlign: "center",
+      align: "center",
+      flex: 2,
+    },
+    {
+      field: "date",
       headerName: "Released Date",
       headerAlign: "center",
       align: "center",
@@ -86,13 +118,6 @@ const ManageAiModel = () => {
     {
       field: "version",
       headerName: "Version",
-      headerAlign: "center",
-      align: "center",
-      flex: 2,
-    },
-    {
-      field: "dataCount",
-      headerName: "Data Count",
       headerAlign: "center",
       align: "center",
       flex: 2,
@@ -134,7 +159,7 @@ const ManageAiModel = () => {
   const aiPerformanceColumns = [
     {
       field: "modelId",
-      headerName: "modelId",
+      headerName: "Model ID",
       headerAlign: "center",
       align: "center",
       flex: 1,
@@ -148,35 +173,35 @@ const ManageAiModel = () => {
     },
     {
       field: "date",
-      headerName: "date",
+      headerName: "Date",
       headerAlign: "center",
       align: "center",
       flex: 2,
     },
     {
       field: "loss",
-      headerName: "loss",
+      headerName: "Loss",
       headerAlign: "center",
       align: "center",
       flex: 2,
     },
     {
       field: "precision",
-      headerName: "precision",
+      headerName: "Precision",
       headerAlign: "center",
       align: "center",
       flex: 2,
     },
     {
       field: "recall",
-      headerName: "recall",
+      headerName: "Recall",
       headerAlign: "center",
       align: "center",
       flex: 2,
     },
     {
       field: "f1",
-      headerName: "f1",
+      headerName: "F1",
       headerAlign: "center",
       align: "center",
       flex: 2,
@@ -196,7 +221,7 @@ const ManageAiModel = () => {
         {/* AI Model Service Health */}
         <Box
           gridColumn="span 4"
-          gridRow="span 3"
+          gridRow="span 4"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="flex-start"
@@ -207,11 +232,11 @@ const ManageAiModel = () => {
             height: "100%",
           }}
         >
-          <StatBox
-            title={aiModelStatus} // AI 모델의 상태를 title에 반영
+          <AiStatBox
+            title={aiModelStatus !== undefined ? "Normal" : "Unknown"} // AI 모델의 상태를 title에 반영
             subtitle="AI Model Service Health"
             icon={
-              aiModelStatus === "Normal" ? ( // AI 모델 상태에 따라 아이콘 변경
+              aiModelStatus !== undefined ? ( // AI 모델 상태에 따라 아이콘 변경
                 <CheckCircleIcon
                   sx={{ color: colors.blueAccent[600], fontSize: "94px" }}
                 />
@@ -221,13 +246,14 @@ const ManageAiModel = () => {
                 />
               )
             }
+            description={aiModelStatus}
             onUpdateStatus={handleUpdateAiModelStatus}
           />
         </Box>
         {/* AI Selection */}
         <Box
           gridColumn="span 8"
-          gridRow="span 3"
+          gridRow="span 4"
           backgroundColor={colors.primary[400]}
           display="flex"
           flexDirection="column"
@@ -239,7 +265,6 @@ const ManageAiModel = () => {
             height: "100%",
           }}
         >
-          {/* Blacklist */}
           <Box
             flexGrow={1}
             width="100%"
@@ -265,7 +290,7 @@ const ManageAiModel = () => {
             <Box
               m="0 0 0 0"
               width="100%"
-              height="57%"
+              height="37vh"
               sx={{
                 "& .MuiDataGrid-root": {
                   border: "none",
@@ -325,7 +350,7 @@ const ManageAiModel = () => {
         {/* AI Performance */}
         <Box
           gridColumn="span 12"
-          gridRow="span 3"
+          gridRow="span 4"
           backgroundColor={colors.primary[400]}
           display="flex"
           flexDirection="column"
@@ -337,7 +362,6 @@ const ManageAiModel = () => {
             height: "100%",
           }}
         >
-          {/* Blacklist */}
           <Box
             flexGrow={1}
             width="100%"
@@ -363,7 +387,7 @@ const ManageAiModel = () => {
             <Box
               m="0 0 0 0"
               width="100%"
-              height="57%"
+              height="37vh"
               sx={{
                 "& .MuiDataGrid-root": {
                   border: "none",
@@ -403,7 +427,16 @@ const ManageAiModel = () => {
             {/* <Box flex={1} p={0} /> */}
             <Divider />
             {/* footer */}
-            <Box display="flex" p={1} alignItems="center">
+            <Box
+              display="flex"
+              p={1}
+              alignItems="center"
+              sx={
+                {
+                  // margin: "20px 20px 20px 20px",
+                }
+              }
+            >
               <Button
                 startIcon={
                   <UpdateIcon
@@ -421,19 +454,168 @@ const ManageAiModel = () => {
         </Box>
         {/* ROW 3 */}
         {/* AI Train */}
+        {/* AI Train */}
         <Box
           gridColumn="span 12"
-          gridRow="span 6"
+          gridRow="span 9"
           backgroundColor={colors.primary[400]}
           display="flex"
+          flexDirection="column"
           alignItems="flex-start"
-          justifyContent="center"
+          justifyContent="flex-start"
           sx={{
             boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
             borderRadius: "5px",
             height: "100%",
           }}
-        ></Box>
+        >
+          {/* header */}
+          <Box
+            sx={{
+              margin: "20px 20px 20px 20px",
+            }}
+          >
+            <AIHeader
+              title="AI Model Training"
+              subtitle="Input hyper-parameters and displays the training results in charts"
+            />
+          </Box>
+          {/* sub header */}
+          <Box
+            sx={{
+              margin: "20px 20px 20px 20px",
+              width: "95%",
+            }}
+          >
+            <AISubHeader title="Collaborative Filtering" />
+            <Divider sx={{ paddingTop: "10px" }} />
+          </Box>
+          {/* TextFields */}
+          <Box
+            sx={{
+              width: "100%", // Ensure full width of the container
+              padding: "0 20px 20px 20px", // Add padding to match the margins
+            }}
+          >
+            <Grid container spacing={2} justifyContent="center">
+              <Grid item xs={2.3}>
+                <TextField
+                  label="Learning rate"
+                  type="number"
+                  fullWidth
+                  onKeyDown={handleNumberInputChange}
+                />
+              </Grid>
+              <Grid item xs={2.3}>
+                <TextField
+                  label="Latent Vector Size"
+                  type="number"
+                  fullWidth
+                  onKeyDown={handleNumberInputChange}
+                />
+              </Grid>
+              <Grid item xs={2.3}>
+                <TextField
+                  label="Regularization Parameter"
+                  type="number"
+                  fullWidth
+                  onKeyDown={handleNumberInputChange}
+                />
+              </Grid>
+              <Grid item xs={2.3}>
+                <TextField
+                  label="#Iteration"
+                  type="number"
+                  fullWidth
+                  onKeyDown={handleNumberInputChange}
+                />
+              </Grid>
+              <Grid item xs={2.3}>
+                <TextField
+                  label="Count Weight"
+                  type="number"
+                  fullWidth
+                  onKeyDown={handleNumberInputChange}
+                />
+              </Grid>
+            </Grid>
+          </Box>
+          {/* POST Button */}
+          <Box
+            sx={{
+              // margin: "20px 20px 20px 20px",
+              display: "flex",
+              justifyContent: "flex-end",
+              width: "98%",
+            }}
+          >
+            <Button
+              onClick={handlePostRequest}
+              // sx={{ fontSize: "12px" }}
+              style={{
+                backgroundColor: colors.blueAccent[900],
+                color: colors.grey[100],
+              }}
+            >
+              Submit
+            </Button>
+          </Box>
+          {/* Train result header */}
+          <Box
+            sx={{
+              margin: "20px 20px 0px 20px",
+              width: "95%",
+            }}
+          >
+            <AISubHeader title="Training Result" />
+            <Divider sx={{ paddingTop: "10px" }} />
+          </Box>
+          {/* Charts */}
+          <Box
+            height="300px"
+            width="100%"
+            display="flex"
+            justifyContent="space-between" // 차트들 사이에 공간을 균등하게 분배
+            alignItems="center" // 차트를 수직으로 가운데 정렬
+            // flexWrap="wrap" // 창 크기에 따라 차트가 자동으로 다음 줄로 이동
+            gap="20px" // 차트들 사이에 여유 공간 추가
+          >
+            {/* <Box> */}
+            <Box>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ color: colors.grey[100], paddingLeft: "20px" }}
+              >
+                Training
+              </Typography>
+            </Box>
+
+            <Box height="300px" width="100%">
+              <TRCLineChart1 />
+              <TRCLineChart1 />
+            </Box>
+            <Box>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ color: colors.grey[100] }}
+              >
+                Validation
+              </Typography>
+              <TRCLineChart1 />
+            </Box>
+
+            <Box height="300px" width="100%">
+              <TRCLineChart2 />
+              <TRCLineChart2 />
+            </Box>
+
+            <Divider />
+            {/* footer */}
+            <Box display="flex" p={1} alignItems="center"></Box>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );

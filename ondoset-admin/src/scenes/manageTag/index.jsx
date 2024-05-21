@@ -295,7 +295,7 @@ const ManageTag = () => {
             endIcon={<AddCircleIcon color={colors.blueAccent[600]} />}
             style={{
               color: colors.grey[100],
-              fontWeight: "bold",
+              // fontWeight: "bold",
             }}
           >
             Add Tag
