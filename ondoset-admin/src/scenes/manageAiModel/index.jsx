@@ -8,6 +8,11 @@ import {
   Grid,
   useTheme,
   IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
@@ -26,17 +31,19 @@ import axios from "axios";
 const ManageAiModel = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [mainStatus, setMainStatus] = useState("Unknown"); // 초기 상태값을 Unknown으로 설정
   const [aiModelStatus, setAiModelStatus] = useState(); // 초기 상태값을 Unknown으로 설정
-  const [reportedOOTDCount, setReportedOOTDCount] = useState(0);
-  const [mainServerErrorCount, setMainServerErrorCount] = useState(0);
   const [aiModelData, setAiModelData] = useState([]); // 표시되는 AI Model 정보들
   const [aiPerformanceData, setAiPerformanceData] = useState([]); // 표시되는 AI Model Performance 정보들
+  const [selectedRow, setSelectedRow] = useState(null); // 선택된 행 정보를 저장하는 상태 변수
   // AI Hyperparameter
   const [learningRate, setLearningRate] = useState("");
   const [latentVectorSize, setLatentVectorSize] = useState("");
   const [regularizationParameter, setRegularizationParameter] = useState("");
   const [iteration, setIteration] = useState("");
+  const [countWeight, setCountWeight] = useState("");
+  // view
+  const [openTest, setOpenTest] = useState(false); // Test 화면 상자 열림 여부 상태
+  const [openApply, setOpenApply] = useState(false); // Apply 화면 상자 열림 여부 상태
 
   useEffect(() => {
     handleUpdateAiModelStatus();
@@ -76,21 +83,24 @@ const ManageAiModel = () => {
   };
 
   const handleNumberInputChange = (event) => {
-    const { value } = event.target;
-    if (/^\d*\.?\d*$/.test(value)) {
-      event.target.value = value;
-    } else {
-      event.preventDefault();
-    }
+    // const { value } = event.target;
+    // if (/^\d*\.?\d*$/.test(value)) {
+    //   event.target.value = value;
+    // } else {
+    //   event.preventDefault();
+    // }
   };
 
-  const handlePostRequest = async () => {
+  const handleTrainPostRequest = async () => {
     const data = {
-      learningRate,
-      latentVectorSize,
-      regularizationParameter,
-      iteration,
+      CFLr: learningRate,
+      LVC: latentVectorSize,
+      CFReg: regularizationParameter,
+      CFIter: iteration,
+      CFW: countWeight,
     };
+
+    console.log(data);
 
     try {
       const response = await axios.post("/admin/ai/train", data);
@@ -98,6 +108,97 @@ const ManageAiModel = () => {
     } catch (error) {
       console.error("POST 요청 실패:", error);
     }
+  };
+
+  const handleTestDialogOpen = (id) => {
+    console.log(id);
+    setSelectedRow(id);
+    setOpenTest(true);
+  };
+
+  const handleTest = () => {
+    // 선택된 행의 Id 가져오기
+    const id = selectedRow.modelId;
+
+    const requestData = {
+      modelId: id,
+    };
+
+    axios
+      .post(`/admin/ai/test`, requestData)
+      .then((response) => {
+        console.log(response.data);
+        // 삭제 성공 시
+        if (response.data.code === "common_2000") {
+          console.log("test 요청 완료");
+          fetchAiModelList();
+        }
+      })
+      .catch((error) => {
+        console.error("Error test:", error);
+      });
+
+    handleTestDialogClose();
+  };
+
+  const handleTestDialogClose = () => {
+    setOpenTest(false);
+    fetchAiModelList();
+  };
+
+  const handleApplyDialogOpen = (id) => {
+    setSelectedRow(id);
+    setOpenApply(true);
+  };
+
+  const handleApply = () => {
+    // 선택된 행의 Id 가져오기
+    const id = selectedRow.modelId;
+
+    const requestData = {
+      modelId: id,
+    };
+
+    axios
+      .post(`/admin/ai/select`, requestData)
+      .then((response) => {
+        console.log(response.data);
+        // 삭제 성공 시
+        if (response.data.code === "common_2000") {
+          console.log("select 요청 완료");
+          fetchAiModelList();
+        }
+      })
+      .catch((error) => {
+        console.error("Error select:", error);
+      });
+
+    handleApplyDialogClose();
+  };
+
+  const handleApplyDialogClose = () => {
+    setOpenApply(false);
+    fetchAiModelList();
+  };
+
+  const handleLearningRate = (event) => {
+    setLearningRate(event.target.value);
+  };
+
+  const handleLatentVectorSize = (event) => {
+    setLatentVectorSize(event.target.value);
+  };
+
+  const handleRegularizationParameter = (event) => {
+    setRegularizationParameter(event.target.value);
+  };
+
+  const handleIteration = (event) => {
+    setIteration(event.target.value);
+  };
+
+  const handleCountWeight = (event) => {
+    setCountWeight(event.target.value);
   };
 
   const aiModelColumns = [
@@ -133,7 +234,12 @@ const ManageAiModel = () => {
       // align: "center",
       renderCell: (params) => (
         <>
-          <IconButton aria-label="bad" onClick={() => {}}>
+          <IconButton
+            aria-label="test"
+            onClick={() => {
+              handleTestDialogOpen(params.row);
+            }}
+          >
             <EditIcon />
           </IconButton>
         </>
@@ -148,7 +254,12 @@ const ManageAiModel = () => {
       flex: 1.5,
       renderCell: (params) => (
         <>
-          <IconButton aria-label="good" onClick={() => {}}>
+          <IconButton
+            aria-label="apply"
+            onClick={() => {
+              handleApplyDialogOpen(params.row);
+            }}
+          >
             <EditIcon />
           </IconButton>
         </>
@@ -323,7 +434,7 @@ const ManageAiModel = () => {
               <DataGrid
                 rows={aiModelData}
                 columns={aiModelColumns}
-                getRowId={(row) => row.version}
+                getRowId={(row) => row.modelId}
                 disableColumnFilter
               />
             </Box>
@@ -340,6 +451,7 @@ const ManageAiModel = () => {
                 style={{
                   color: colors.grey[100],
                 }}
+                onClick={fetchAiModelList}
               >
                 Update Status
               </Button>
@@ -447,6 +559,7 @@ const ManageAiModel = () => {
                 style={{
                   color: colors.grey[100],
                 }}
+                onClick={fetchAiPerfomanceData}
               >
                 Update Status
               </Button>
@@ -503,6 +616,8 @@ const ManageAiModel = () => {
                 <TextField
                   label="Learning rate"
                   type="number"
+                  value={learningRate}
+                  onChange={handleLearningRate}
                   fullWidth
                   onKeyDown={handleNumberInputChange}
                 />
@@ -511,6 +626,8 @@ const ManageAiModel = () => {
                 <TextField
                   label="Latent Vector Size"
                   type="number"
+                  value={latentVectorSize}
+                  onChange={handleLatentVectorSize}
                   fullWidth
                   onKeyDown={handleNumberInputChange}
                 />
@@ -519,6 +636,8 @@ const ManageAiModel = () => {
                 <TextField
                   label="Regularization Parameter"
                   type="number"
+                  value={regularizationParameter}
+                  onChange={handleRegularizationParameter}
                   fullWidth
                   onKeyDown={handleNumberInputChange}
                 />
@@ -527,6 +646,8 @@ const ManageAiModel = () => {
                 <TextField
                   label="#Iteration"
                   type="number"
+                  value={iteration}
+                  onChange={handleIteration}
                   fullWidth
                   onKeyDown={handleNumberInputChange}
                 />
@@ -535,6 +656,8 @@ const ManageAiModel = () => {
                 <TextField
                   label="Count Weight"
                   type="number"
+                  value={countWeight}
+                  onChange={handleCountWeight}
                   fullWidth
                   onKeyDown={handleNumberInputChange}
                 />
@@ -551,7 +674,7 @@ const ManageAiModel = () => {
             }}
           >
             <Button
-              onClick={handlePostRequest}
+              onClick={handleTrainPostRequest}
               // sx={{ fontSize: "12px" }}
               style={{
                 backgroundColor: colors.blueAccent[900],
@@ -617,6 +740,80 @@ const ManageAiModel = () => {
           </Box>
         </Box>
       </Box>
+      {/*  테스트 화면 */}
+      <Dialog
+        open={openTest}
+        onClose={handleTestDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle>
+          <Typography variant="h6" color={colors.grey[100]}>
+            Test AI Model
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            id="alert-dialog-description"
+            sx={{ paddingBottom: "10px" }}
+          >
+            Are you sure you want to test this model?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleTestDialogClose} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleTest}
+            sx={{ fontSize: "12px" }}
+            style={{
+              backgroundColor: colors.blueAccent[900],
+              color: colors.grey[100],
+            }}
+            autoFocus
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/*  적용 화면 */}
+      <Dialog
+        open={openApply}
+        onClose={handleApplyDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle>
+          <Typography variant="h6" color={colors.grey[100]}>
+            Apply AI Model
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            id="alert-dialog-description"
+            sx={{ paddingBottom: "10px" }}
+          >
+            Are you sure you want to apply this model?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleApplyDialogClose} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleApply}
+            sx={{ fontSize: "12px" }}
+            style={{
+              backgroundColor: colors.blueAccent[900],
+              color: colors.grey[100],
+            }}
+            autoFocus
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
