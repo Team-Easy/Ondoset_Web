@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockReportedOOTDData } from "../../data/mockData";
 import ReportOOTDCard from "./ootdDialog";
 import Header from "../../components/Header";
 import UpdateIcon from "@mui/icons-material/Update";

@@ -15,11 +15,6 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import {
-  mockBlacklistData,
-  mockOffenderListData,
-  mockReporterListData,
-} from "../../data/mockData";
 import Header from "../../components/Header";
 import EditIcon from "@mui/icons-material/Edit";
 import PreviewIcon from "@mui/icons-material/Preview";

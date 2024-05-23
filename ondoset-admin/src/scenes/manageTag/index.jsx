@@ -19,7 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import UpdateIcon from "@mui/icons-material/Update";
 import AddTagDialog from "./addTagDialog.jsx";
-import UpdateDialog from "./updateDialog.jsx";
+import UpdateDialog from "./UpdateDialog.jsx";
 import axios from "axios";
 
 const ManageTag = () => {
