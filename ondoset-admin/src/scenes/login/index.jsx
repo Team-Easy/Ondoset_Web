@@ -6,12 +6,12 @@ import {
   TextField,
   Typography,
   CircularProgress,
-  Link,
   useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import LoginImage from "../../assets/ondoset_login_image.png";
+import introImg from "../../assets/introduce.png";
 
 const LoginPage = ({ onLogin }) => {
   const theme = useTheme();
@@ -79,12 +79,13 @@ const LoginPage = ({ onLogin }) => {
       alignItems="center"
       height="100vh" // 화면 전체 높이만큼 설정
       width="100%"
+      sx={{ overflow: "auto" }} // 스크롤 기능 추가
     >
       <Box
-        width={800}
-        height={500}
+        width="130vh"
+        height="90vh"
         display="flex"
-        alignItems="center"
+        alignItems="flex-start"
         justifyContent="space-between"
         border="1px solid #ccc"
         borderRadius={8}
@@ -93,13 +94,16 @@ const LoginPage = ({ onLogin }) => {
           backgroundColor: colors.blueAccent[900],
           boxShadow: "0px 0px 6px rgba(0,0,0,0.2)",
           borderRadius: "5px",
+          overflow: "auto",
         }}
       >
-        <Box flex="1" m={6}>
+        <Box width="100%" display="flex" justifyContent="center" m={2}>
           <img
-            src={LoginImage}
-            alt="LoginImage"
-            style={{ maxWidth: "100%", height: "auto" }}
+            // MARK: 해당 이미지가 600x2000 사이즈의 소개 이미지로 변경될 예정
+            src={introImg}
+            alt="introImg"
+            // style={{ maxWidth: "100%", height: "auto" }}
+            style={{ width: "100%", height: "100%" }}
           />
         </Box>
         <Box
@@ -109,9 +113,29 @@ const LoginPage = ({ onLogin }) => {
           justifyContent="center"
           //   height="100vh"
         >
-          <Typography variant="h3" gutterBottom color={colors.blueAccent[100]}>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            width="100%"
+            // mb={2} // 이미지와 텍스트 사이의 간격 조절
+          >
+            <img
+              src={LoginImage}
+              alt="LoginImage"
+              style={{ maxWidth: "50%", height: "auto" }}
+            />
+          </Box>
+          {/* <Typography
+            variant="h3"
+            gutterBottom
+            color={colors.blueAccent[100]}
+            align="left" // 좌측 정렬 추가
+            sx={{ alignSelf: "flex-start" }} // 추가 스타일
+            paddingLeft={2}
+          >
             Login
-          </Typography>
+          </Typography> */}
           <TextField
             label="Username"
             variant="outlined"
